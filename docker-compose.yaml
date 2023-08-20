@@ -1,0 +1,35 @@
+version: '2.1'
+services:
+  notification-mongodb:
+    image: mongo:3
+    container_name: notification-mongodb
+    hostname: notification-mongodb
+    restart: unless-stopped
+    ports:
+      - 25000:27017
+    environment:
+      - MONGO_INIT_DATABASE=${MONGO_DB}
+      - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
+      - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
+  account-mongodb:
+    image: mongo:3
+    container_name: account-mongodb
+    hostname: account-mongodb
+    restart: unless-stopped
+    ports:
+      - 26000:27017
+    environment:
+      - MONGO_INIT_DATABASE=${MONGO_DB}
+      - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
+      - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
+  statistics-mongodb:
+    image: mongo:3
+    container_name: statistics-mongodb
+    hostname: statistics-mongodb
+    restart: unless-stopped
+    ports:
+      - 27000:27017
+    environment:
+      - MONGO_INIT_DATABASE=${MONGO_DB}
+      - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
+      - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}

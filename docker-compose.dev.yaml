@@ -1,0 +1,14 @@
+version: '2.1'
+services:
+  auth-mongodb:
+    build: mongodb
+    ports:
+      - 25000:27017
+  account-mongodb:
+    build: mongodb
+    ports:
+      - 26000:27017
+  statistics-mongodb:
+    build: mongodb
+    ports:
+      - 27000:27017
