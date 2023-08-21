@@ -1,8 +1,11 @@
+security:
+  ignored: /**
+
 spring:
   data:
     mongodb:
       host: localhost
       port: 26000
-      username: user
-      password: password
-      database: piggymetrics
+      username: ${MONGO_DB_USERNAME}
+      password: ${MONGO_DB_PASSWORD}
+      database: ${MONGO_DB}

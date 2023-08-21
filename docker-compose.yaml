@@ -8,20 +8,23 @@ services:
     ports:
       - 25000:27017
     environment:
-      - MONGO_INIT_DATABASE=${MONGO_DB}
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
       - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
       - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
   account-mongodb:
-    image: mongo:3
+    build:
+      context: .
+      dockerfile: mongodb/Dockerfile
     container_name: account-mongodb
     hostname: account-mongodb
     restart: unless-stopped
     ports:
       - 26000:27017
     environment:
-      - MONGO_INIT_DATABASE=${MONGO_DB}
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
       - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
       - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
+      - INIT_DUMP=${INIT_DUMP_ACCOUNTS}
   statistics-mongodb:
     image: mongo:3
     container_name: statistics-mongodb
@@ -30,6 +33,6 @@ services:
     ports:
       - 27000:27017
     environment:
-      - MONGO_INIT_DATABASE=${MONGO_DB}
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
       - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
       - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
