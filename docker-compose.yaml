@@ -24,7 +24,7 @@ services:
       - MONGO_INITDB_DATABASE=${MONGO_DB}
       - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
       - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
-      - INIT_DUMP=${INIT_DUMP_ACCOUNTS}
+      - INIT_DUMP=${INIT_DUMP_OAUTH2}
   statistics-mongodb:
     image: mongo:3
     container_name: statistics-mongodb
@@ -32,6 +32,17 @@ services:
     restart: unless-stopped
     ports:
       - 27000:27017
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_DB}
+      - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
+      - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
+  auth-mongodb:
+    image: mongo:3
+    container_name: auth-mongodb
+    hostname: auth-mongodb
+    restart: unless-stopped
+    ports:
+      - 28000:27017
     environment:
       - MONGO_INITDB_DATABASE=${MONGO_DB}
       - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}

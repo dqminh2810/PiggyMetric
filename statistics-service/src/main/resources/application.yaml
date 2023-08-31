@@ -6,3 +6,5 @@ spring:
       username: user
       password: password
       database: piggymetrics
+server:
+  port: 8082

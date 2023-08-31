@@ -1,11 +1,25 @@
-security:
-  ignored: /**
+server:
+  port: ${SPRING_APPLICATION_PORT}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: TRACE
 
 spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME}
   data:
     mongodb:
-      host: localhost
-      port: 26000
+      host: ${MONGO_DB_HOST}
+      port: ${MONGO_DB_PORT}
       username: ${MONGO_DB_USERNAME}
       password: ${MONGO_DB_PASSWORD}
       database: ${MONGO_DB}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_PROVIDER_ISSUER_URI}

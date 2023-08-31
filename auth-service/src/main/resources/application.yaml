@@ -1,0 +1,36 @@
+server:
+  port: ${SPRING_APPLICATION_PORT}
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: INFO
+        security: INFO
+        security.oauth2: TRACE
+
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME}
+  data:
+    mongodb:
+      host: ${MONGO_DB_HOST}
+      port: ${MONGO_DB_PORT}
+      username: ${MONGO_DB_USERNAME}
+      password: ${MONGO_DB_PASSWORD}
+      database: ${MONGO_DB}
+  security:
+    oauth2:
+      authorizationserver:
+        client:
+          accounts-client-oauth2:
+            registration:
+              client-id: ${OAUTH2_CLIENT_ID}
+              client-secret: ${OAUTH2_CLIENT_SECRET}
+              client-authentication-methods: ${OAUTH2_CLIENT_AUTHENTICATION_METHODS}
+              authorization-grant-types: ${OAUTH2_CLIENT_AUTHORIZATION_GRANT_TYPES}
+              redirect-uris: ${OAUTH2_CLIENT_REDIRECT_URIS}
+              scopes: ${OAUTH2_CLIENT_SCOPE}
+#            require-authorization-consent: false
+#            require-proof-key: false
