@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
-@FeignClient(value = "accounts-service", url = "http://localhost:8080", configuration = OAuthFeignConfig.class)
+@FeignClient(value = "accounts-service", url = "${accounts.base-uri}", configuration = OAuthFeignConfig.class)
 public interface AccountServiceFeignClient {
     @GetMapping(value = "/accounts")
     List<Account> getAccounts();

@@ -45,7 +45,7 @@ spring:
 #            token-uri: http://localhost:9000/oauth2/token
 #            authorization-uri: http://localhost:9000/oauth2/authorize
 accounts:
-  base-uri: http://127.0.0.1:8080/accounts
+  base-uri: ${ACCOUNTS_URI}
 
 feign:
   client:
