@@ -1,0 +1,24 @@
+server:
+  port: ${SPRING_APPLICATION_PORT}
+
+logging:
+  level:
+    root: INFO
+    org:
+      springframework:
+        web: INFO
+        security: INFO
+        security.oauth2: TRACE
+
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME}
+  cloud:
+    gateway:
+#      default-filters:
+#        - TokenRelay=
+      routes:
+        - id: route-experience
+          uri: ${EXPERIENCE_URI}
+          predicates:
+            - Path=/**

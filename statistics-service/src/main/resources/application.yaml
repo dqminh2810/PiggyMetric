@@ -7,4 +7,4 @@ spring:
       password: password
       database: piggymetrics
 server:
-  port: 8082
+  port: 8083

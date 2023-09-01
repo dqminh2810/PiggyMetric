@@ -6,7 +6,7 @@ logging:
     root: INFO
     org.springframework.web: INFO
     org.springframework.security: INFO
-    org.springframework.security.oauth2: INFO
+    org.springframework.security.oauth2: TRACE
 
 spring:
   application:
@@ -20,32 +20,35 @@ spring:
       database: ${MONGO_DB}
   security:
     oauth2:
-      client:
-        registration:
-#          accounts-client-client-credentials:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_PROVIDER_ISSUER_URI}
+#      client:
+#        registration:
+#          account-client-oauth2-client-credentials:
 #            provider: spring
-#            client-name: accounts-client-client-credentials
-#            client-id: accounts-client
-#            client-secret: secret
-#            authorization-grant-type: client_credentials
-#            scope: accounts.read,accounts.write
-#
-          accounts-client-oauth2:
-            provider: spring
-            client-name: ${OAUTH2_CLIENT_NAME}
-            client-id: ${OAUTH2_CLIENT_ID}
-            client-secret: ${OAUTH2_CLIENT_SECRET}
-            client-authorization-method: ${OAUTH2_CLIENT_AUTHENTICATION_METHOD}
-            authorization-grant-type: ${OAUTH2_CLIENT_AUTHORIZATION_GRANT_TYPE}
-            redirect-uri: ${OAUTH2_CLIENT_REDIRECT_URI}
-            scope: ${OAUTH2_CLIENT_SCOPE}
-        provider:
-          spring:
-            issuer-uri: ${OAUTH2_PROVIDER_ISSUER_URI}
+#            client-name: ${OAUTH2_ACCOUNT_CLIENT_NAME}
+#            client-id: ${OAUTH2_ACCOUNT_CLIENT_ID}
+#            client-secret: ${OAUTH2_ACCOUNT_CLIENT_SECRET}
+#            client-authorization-method: ${OAUTH2_ACCOUNT_CLIENT_AUTHENTICATION_METHOD}
+#            authorization-grant-type: ${OAUTH2_ACCOUNT_CLIENT_AUTHORIZATION_GRANT_TYPE}
+#            scope: ${OAUTH2_ACCOUNT_CLIENT_SCOPES}
+#          account-client-oauth2:
+#            provider: spring
+#            client-name: ${OAUTH2_CLIENT_NAME}
+#            client-id: ${OAUTH2_CLIENT_ID}
+#            client-secret: ${OAUTH2_CLIENT_SECRET}
+#            client-authorization-method: ${OAUTH2_CLIENT_AUTHENTICATION_METHOD}
+#            authorization-grant-type: ${OAUTH2_CLIENT_AUTHORIZATION_GRANT_TYPE}
+#            redirect-uri: ${OAUTH2_CLIENT_REDIRECT_URI}
+#            scope: ${OAUTH2_CLIENT_SCOPES}
+#        provider:
+#          spring:
+#            issuer-uri: ${OAUTH2_PROVIDER_ISSUER_URI}
 #            token-uri: http://localhost:9000/oauth2/token
 #            authorization-uri: http://localhost:9000/oauth2/authorize
-accounts:
-  base-uri: ${ACCOUNTS_URI}
+account:
+  base-uri: ${ACCOUNT_URI}
 
 feign:
   client:

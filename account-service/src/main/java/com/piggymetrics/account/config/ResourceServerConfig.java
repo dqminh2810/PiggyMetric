@@ -11,14 +11,14 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration()
 public class ResourceServerConfig {
-//    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
-//    String issuerUri;
-//    @Bean
-//    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.securityMatcher("/OAUTH2/**")
-//                .authorizeHttpRequests((auth) -> auth.requestMatchers("/OAUTH2/**").hasAuthority("SCOPE_OAUTH2.read"))
-////                .authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
-//                .oauth2ResourceServer((oauth2) -> oauth2.jwt(jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation(issuerUri))));
-//        return http.build();
-//    }
+    @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}")
+    String issuerUri;
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.securityMatcher("/api/**")
+                .authorizeHttpRequests((auth) -> auth.requestMatchers("/api/**").hasAuthority("SCOPE_account.read"))
+                .authorizeHttpRequests((auth) -> auth.anyRequest().authenticated())
+                .oauth2ResourceServer((oauth2) -> oauth2.jwt(jwt -> jwt.decoder(JwtDecoders.fromIssuerLocation(issuerUri))));
+        return http.build();
+    }
 }

@@ -23,3 +23,34 @@ spring:
       resourceserver:
         jwt:
           issuer-uri: ${OAUTH2_PROVIDER_ISSUER_URI}
+#      client:
+#        registration:
+#          notification-client-oauth2-client-credentials:
+#            provider: spring
+#            client-name: ${OAUTH2_NOTIFICATION_CLIENT_NAME}
+#            client-id: ${OAUTH2_NOTIFICATION_CLIENT_ID}
+#            client-secret: ${OAUTH2_NOTIFICATION_CLIENT_SECRET}
+#            client-authorization-method: ${OAUTH2_NOTIFICATION_CLIENT_AUTHENTICATION_METHOD}
+#            authorization-grant-type: ${OAUTH2_NOTIFICATION_CLIENT_AUTHORIZATION_GRANT_TYPE}
+#            scope: ${OAUTH2_NOTIFICATION_CLIENT_SCOPES}
+#          notification-client-oauth2-authorization-code:
+#            provider: spring
+#            client-name: ${OAUTH2_NOTIFICATION_CLIENT_NAME}
+#            client-id: ${OAUTH2_NOTIFICATION_CLIENT_ID}
+#            client-secret: ${OAUTH2_NOTIFICATION_CLIENT_SECRET}
+#            client-authorization-method: ${OAUTH2_NOTIFICATION_CLIENT_AUTHENTICATION_METHOD}
+#            authorization-grant-type: ${OAUTH2_NOTIFICATION_CLIENT_AUTHORIZATION_GRANT_TYPE}
+#            redirect-uri: ${OAUTH2_NOTIFICATION_CLIENT_REDIRECT_URI}
+#            scope: ${OAUTH2_NOTIFICATION_CLIENT_SCOPES}
+#        provider:
+#          spring:
+#            issuer-uri: ${OAUTH2_PROVIDER_ISSUER_URI}
+
+notification:
+  base-uri: ${NOTIFICATION_URI}
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full

@@ -9,20 +9,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/api")
 public class AccountController {
     @Autowired
     private AccountService accountService;
-    @GetMapping(path="/test")
-    public String test(){
-        return "test non protected resource";
-    }
-    @GetMapping(path="/accounts")
+    @GetMapping(path="/all")
     public List<Account> getAccounts(){return accountService.findAll();}
-    @GetMapping(path="/accounts/{name}")
+    @GetMapping(path="/{name}")
     public Account getAccountByName(@PathVariable String name){return accountService.findByName(name);}
-    @PostMapping(path="/accounts")
+    @PostMapping(path="/")
     public Account createNewAccount(@RequestBody User user){return accountService.create(user);}
-    @PutMapping(path="/accounts/current/{name}")
+    @PutMapping(path="/current/{name}")
     public void saveCurrentAccount(@PathVariable String name, @RequestBody Account account){accountService.saveChanges(name, account);}
 }

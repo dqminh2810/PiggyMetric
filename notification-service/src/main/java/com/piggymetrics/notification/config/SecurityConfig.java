@@ -10,24 +10,24 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
-@Configuration
+//@Configuration
 public class SecurityConfig {
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http, ClientRegistrationRepository clientRegistrationRepository) throws Exception {
-        http
-                .oauth2Login(withDefaults())
-                .oauth2Client(withDefaults())
-                .logout(logout ->
-                        logout.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository)))
-                .authorizeHttpRequests(authorize ->
-                        authorize
-                                .anyRequest().authenticated()
-                )
-                ;
-        return http.build();
-    }
-    private LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository) {
-        return new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
-    }
+//    @Bean
+//    SecurityFilterChain securityFilterChain(HttpSecurity http, ClientRegistrationRepository clientRegistrationRepository) throws Exception {
+//        http
+//                .oauth2Login(withDefaults())
+//                .oauth2Client(withDefaults())
+//                .logout(logout ->
+//                        logout.logoutSuccessHandler(oidcLogoutSuccessHandler(clientRegistrationRepository)))
+//                .authorizeHttpRequests(authorize ->
+//                        authorize
+//                                .anyRequest().authenticated()
+//                )
+//                ;
+//        return http.build();
+//    }
+//    private LogoutSuccessHandler oidcLogoutSuccessHandler(ClientRegistrationRepository clientRegistrationRepository) {
+//        return new OidcClientInitiatedLogoutSuccessHandler(clientRegistrationRepository);
+//    }
 
 }

@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class DefaultController {
     @GetMapping("/")
     public String welcome() {
-        return "<h1>welcome</h1>";
+        return "<h1>Welcome notification</h1>";
     }
 }
