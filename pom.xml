@@ -42,11 +42,11 @@
     </dependencyManagement>
 
     <modules>
-        <module>account-service</module>
-        <module>statistics-service</module>
-        <module>notification-service</module>
         <module>auth-service</module>
-        <module>experience</module>
+        <module>account-service</module>
+        <module>statistic-service</module>
+        <module>notification-service</module>
+        <module>experience-service</module>
         <module>gateway</module>
     </modules>
 </project>

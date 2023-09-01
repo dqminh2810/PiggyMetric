@@ -1,12 +1,81 @@
-version: '2.1'
+version: '3.8'
 services:
+  ###SPRING BOOT###
+  gateway:
+    build: gateway
+    container_name: gateway
+    hostname: gateway
+    restart: always
+    ports:
+      - 8000:8000
+    depends_on:
+      - experience-service
+  experience-service:
+    build: experience-service
+    container_name: experience-service
+    hostname: experience-service
+    restart: always
+    ports:
+      - 8080:8080
+    depends_on:
+      - auth-service
+      - account-service
+      - notification-service
+      - statistic-service
+  account-service:
+    build: account-service
+    container_name: account-service
+    hostname: account-service
+    restart: always
+    ports:
+      - 8081:8081
+    links:
+      - account-mongodb
+    depends_on:
+      - auth-service
+      - account-mongodb
+  notification-service:
+    build: notification-service
+    container_name: notification-service
+    hostname: notification-service
+    restart: always
+    ports:
+      - 8082:8082
+    links:
+      - notification-mongodb
+    depends_on:
+      - auth-service
+      - notification-mongodb
+  statistic-service:
+    build: statistic-service
+    container_name: statistic-service
+    hostname: statistic-service
+    restart: always
+    ports:
+      - 8083:8083
+    links:
+      - statistic-mongodb
+    depends_on:
+      - auth-service
+      - statistic-mongodb
+  auth-service:
+    build: auth-service
+    container_name: auth-service
+    hostname: auth-service
+    restart: always
+    ports:
+      - 9000:9000
+    depends_on:
+      - auth-mongodb
+
+  ###MONGODB###
   notification-mongodb:
     image: mongo:3
     container_name: notification-mongodb
     hostname: notification-mongodb
     restart: unless-stopped
-    ports:
-      - 25000:27017
+#    ports:
+#      - 25000:27017
     environment:
       - MONGO_INITDB_DATABASE=${MONGO_DB}
       - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
@@ -18,20 +87,20 @@ services:
     container_name: account-mongodb
     hostname: account-mongodb
     restart: unless-stopped
-    ports:
-      - 26000:27017
+#    ports:
+#      - 26000:27017
     environment:
       - MONGO_INITDB_DATABASE=${MONGO_DB}
       - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
       - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
       - INIT_DUMP=${INIT_DUMP_OAUTH2}
-  statistics-mongodb:
+  statistic-mongodb:
     image: mongo:3
-    container_name: statistics-mongodb
-    hostname: statistics-mongodb
+    container_name: statistic-mongodb
+    hostname: statistic-mongodb
     restart: unless-stopped
-    ports:
-      - 27000:27017
+#    ports:
+#      - 27000:27017
     environment:
       - MONGO_INITDB_DATABASE=${MONGO_DB}
       - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
@@ -41,9 +110,10 @@ services:
     container_name: auth-mongodb
     hostname: auth-mongodb
     restart: unless-stopped
-    ports:
-      - 28000:27017
+#    ports:
+#      - 28000:27017
     environment:
       - MONGO_INITDB_DATABASE=${MONGO_DB}
       - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
       - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
+

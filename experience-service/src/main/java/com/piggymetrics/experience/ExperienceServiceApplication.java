@@ -1,14 +1,15 @@
-package com.piggymetrics.gateway;
+package com.piggymetrics.experience;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
-public class GatewayApplication {
-
+@EnableFeignClients
+public class ExperienceServiceApplication {
 	public static void main(String[] args) {
 //		System.setProperty("java.net.preferIPv4Stack", "true");
-		SpringApplication.run(GatewayApplication.class, args);
+		SpringApplication.run(ExperienceServiceApplication.class, args);
 	}
 
 }
