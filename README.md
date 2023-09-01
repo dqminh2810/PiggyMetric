@@ -3,12 +3,16 @@ Microservices for personal finance application using Spring technology influence
 
 SPA is also developed by Angular framework and deployed separately following client-server architecture, instead of using default static files serving in Spring Boot Tomcat server.
 
-## Development
+## Build & Run
+### Docker
+`. build.sh`
 
-### Init & start database
-`docker-compose up -d`
+or `. build.sh --rebuild` to rebuild docker images
+### Hostname resolver
+In order to access to docker containers by its name from host machine, we need to change the /etc/hosts file to map the hostname to point to localhost (127.0.0.1)
 
-### Init & start Microservices
-`cd {{service-repository}}`
+Add these lines to hosts file `**C:\Windows\System32\drivers\etc\hosts folder on Windows & /etc/hosts on Linux**`
 
-`mvn spring-boot:run`
+`127.0.0.1 gateway auth-service experience-service account-service notification-service statistic-service account-mongodb auth-mongodb notification-mongodb statistic-mongodb`
+
+Now you are able to access to http://gateway:8000
