@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(value = "notification-service", url = "${notification.base-uri}", configuration = OAuthFeignConfig.class)
 public interface NotificationServiceFeignClient {
-    @GetMapping(value = "/")
+    @GetMapping()
     String welcomeNotification();
 }

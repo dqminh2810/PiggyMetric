@@ -22,6 +22,15 @@ services:
       - account-service
       - notification-service
       - statistic-service
+  auth-service:
+    build: auth-service
+    container_name: auth-service
+    hostname: auth-service
+    restart: always
+    ports:
+      - 9000:9000
+    depends_on:
+      - auth-mongodb
   account-service:
     build: account-service
     container_name: account-service
@@ -37,7 +46,7 @@ services:
   notification-service:
     build: notification-service
     container_name: notification-service
-    hostname: notification-service
+    hostname: server
     restart: always
     ports:
       - 8082:8082
@@ -58,15 +67,6 @@ services:
     depends_on:
       - auth-service
       - statistic-mongodb
-  auth-service:
-    build: auth-service
-    container_name: auth-service
-    hostname: auth-service
-    restart: always
-    ports:
-      - 9000:9000
-    depends_on:
-      - auth-mongodb
 
   ###MONGODB###
   notification-mongodb:
@@ -77,9 +77,9 @@ services:
 #    ports:
 #      - 25000:27017
     environment:
-      - MONGO_INITDB_DATABASE=${MONGO_DB}
-      - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
-      - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
   account-mongodb:
     build:
       context: .
@@ -90,9 +90,9 @@ services:
 #    ports:
 #      - 26000:27017
     environment:
-      - MONGO_INITDB_DATABASE=${MONGO_DB}
-      - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
-      - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - INIT_DUMP=${INIT_DUMP_OAUTH2}
   statistic-mongodb:
     image: mongo:3
@@ -102,9 +102,9 @@ services:
 #    ports:
 #      - 27000:27017
     environment:
-      - MONGO_INITDB_DATABASE=${MONGO_DB}
-      - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
-      - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
   auth-mongodb:
     image: mongo:3
     container_name: auth-mongodb
@@ -113,7 +113,7 @@ services:
 #    ports:
 #      - 28000:27017
     environment:
-      - MONGO_INITDB_DATABASE=${MONGO_DB}
-      - MONGO_DB_USERNAME=${MONGO_DB_USERNAME}
-      - MONGO_DB_PASSWORD=${MONGO_DB_PASSWORD}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
 

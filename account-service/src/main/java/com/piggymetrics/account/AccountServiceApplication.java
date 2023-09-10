@@ -9,7 +9,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 public class AccountServiceApplication {
 
 	public static void main(String[] args) {
-//		System.setProperty("java.net.preferIPv4Stack", "true");
+		System.setProperty("java.net.preferIPv4Stack", "true");
 		SpringApplication.run(AccountServiceApplication.class, args);
 	}
 }

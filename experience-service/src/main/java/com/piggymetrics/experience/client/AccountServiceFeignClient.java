@@ -11,6 +11,8 @@ import java.util.List;
 public interface AccountServiceFeignClient {
     @GetMapping(value = "/api/all")
     List<Account> getAccounts();
-    @GetMapping(value = "/")
+    @GetMapping("/api")
     String welcomeAccount();
+    @GetMapping("/token")
+    String getToken();
 }

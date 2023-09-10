@@ -1,44 +1,50 @@
-version: '2.1'
+version: '3'
 services:
-  auth-mongodb:
-    build: mongodb
+  ###MONGODB###
+  notification-mongodb:
+    image: mongo:3
+    container_name: notification-mongodb
+    hostname: notification-mongodb
+    restart: unless-stopped
     ports:
       - 25000:27017
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
   account-mongodb:
-    build: mongodb
+    build:
+      context: .
+      dockerfile: mongodb/Dockerfile
+    container_name: account-mongodb
+    hostname: account-mongodb
+    restart: unless-stopped
     ports:
       - 26000:27017
-  statistics-mongodb:
-    build: mongodb
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+      - INIT_DUMP=${INIT_DUMP_OAUTH2}
+  statistic-mongodb:
+    image: mongo:3
+    container_name: statistic-mongodb
+    hostname: statistic-mongodb
+    restart: unless-stopped
     ports:
       - 27000:27017
-
-  gateway:
-    build: gateway
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+  auth-mongodb:
+    image: mongo:3
+    container_name: auth-mongodb
+    hostname: auth-mongodb
+    restart: unless-stopped
     ports:
-      - 8000:8000
-
-  auth-service:
-    build: auth-service
-    ports:
-      - 9000:9000
-
-  experience-service:
-    build: account-service
-    ports:
-      - 8080:8080
-
-  account-service:
-    build: account-service
-    ports:
-      - 8081:8081
-
-  notification-service:
-    build: notification-service
-    ports:
-      - 8082:8082
-
-  statistics-service:
-    build: statistic-service
-    ports:
-      - 8083:8083
+      - 28000:27017
+    environment:
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}

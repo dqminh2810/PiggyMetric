@@ -16,7 +16,7 @@ public class NotificationController {
     @Autowired
     NotificationService notificationService;
 
-    @GetMapping(path="/")
+    @GetMapping()
     public String welcomeNotification(){
         return notificationService.welcomeNotification();
     }

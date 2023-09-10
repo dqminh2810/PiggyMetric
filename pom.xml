@@ -48,5 +48,6 @@
         <module>notification-service</module>
         <module>experience-service</module>
         <module>gateway</module>
+        <module>registry</module>
     </modules>
 </project>

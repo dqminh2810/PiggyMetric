@@ -6,8 +6,8 @@ logging:
     root: INFO
     org:
       springframework:
-        web: INFO
-        security: INFO
+        web: DEBUG
+        security: DEBUG
         security.oauth2: TRACE
 
 spring:
@@ -15,10 +15,35 @@ spring:
     name: ${SPRING_APPLICATION_NAME}
   cloud:
     gateway:
-#      default-filters:
-#        - TokenRelay=
+      default-filters:
+        - TokenRelay=
       routes:
         - id: route-experience
-          uri: ${EXPERIENCE_URI}
+          uri: ${EXPERIENCE_URI}/
           predicates:
             - Path=/**
+  security:
+    oauth2:
+      client:
+        registration:
+          experience-client-oauth2-authorization-code:
+            provider: spring
+            client-name: ${OAUTH2_EXPERIENCE_CLIENT_NAME}
+            client-id: ${OAUTH2_EXPERIENCE_CLIENT_ID}
+            client-secret: ${OAUTH2_EXPERIENCE_CLIENT_SECRET}
+#            client-authorization-method: ${OAUTH2_EXPERIENCE_CLIENT_AUTHENTICATION_METHOD}
+            authorization-grant-type: ${OAUTH2_EXPERIENCE_CLIENT_AUTHORIZATION_GRANT_TYPE}
+            redirect-uri: ${OAUTH2_EXPERIENCE_CLIENT_REDIRECT_URI}
+            scope: ${OAUTH2_EXPERIENCE_CLIENT_SCOPES}
+        provider:
+          spring:
+            issuer-uri: ${OAUTH2_PROVIDER_ISSUER_URI}
+
+experience:
+  base-uri: ${EXPERIENCE_URI}
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full

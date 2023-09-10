@@ -10,7 +10,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 @EnableFeignClients()
 public class NotificationServiceApplication {
 	public static void main(String[] args) {
-//		System.setProperty("java.net.preferIPv4Stack", "true");
+		System.setProperty("java.net.preferIPv4Stack", "true");
 		SpringApplication.run(NotificationServiceApplication.class, args);
 	}
 

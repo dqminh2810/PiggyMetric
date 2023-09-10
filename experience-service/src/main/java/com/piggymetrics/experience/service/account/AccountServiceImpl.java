@@ -21,4 +21,10 @@ public class AccountServiceImpl implements AccountService {
     public String welcomeAccount() {
         return accountServiceClient.welcomeAccount();
     }
+
+    @Override
+    public String getToken() {
+        return accountServiceClient.getToken();
+    }
 }
+
