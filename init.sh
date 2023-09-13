@@ -48,6 +48,7 @@ echo filename=.env > ./account-service/src/main/resources/.env.properties &&
 echo filename=.env > ./notification-service/src/main/resources/.env.properties &&
 echo filename=.env > ./statistic-service/src/main/resources/.env.properties &&
 echo filename=.env > ./gateway/src/main/resources/.env.properties &&
+echo filename=.env > ./registry/src/main/resources/.env.properties &&
 if [[ "$REBUILD" == "true" ]]; then
   if [[ ${multi[@]} != "" ]]; then   # Rebuild on select
     MAVEN_ARGUMENTS="--projects $(join_by , ${multi[@]}) --also-make clean package -DskipTests=true"

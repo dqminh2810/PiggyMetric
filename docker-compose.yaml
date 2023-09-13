@@ -1,6 +1,16 @@
 version: '3.8'
 services:
   ###SPRING BOOT###
+  registry:
+    build: registry
+    container_name: registry
+    hostname: registry
+    restart: always
+    ports:
+      - 8761:8761
+    depends_on:
+      - gateway
+      - experience-service
   gateway:
     build: gateway
     container_name: gateway

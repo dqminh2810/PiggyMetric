@@ -55,3 +55,8 @@ feign:
     config:
       default:
         loggerLevel: full
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${REGISTRY_URI}/eureka/

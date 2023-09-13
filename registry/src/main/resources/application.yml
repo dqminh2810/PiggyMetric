@@ -16,8 +16,7 @@ eureka:
   client:
     registerWithEureka: false
     fetchRegistry: false
-    #    fetchRegistry: false
     #    server:
     #      waitTimeInMsWhenSyncEmpty: 0
-#  instance:
-#    prefer-ip-address: true
+  instance:
+    prefer-ip-address: true

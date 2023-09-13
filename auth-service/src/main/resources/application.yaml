@@ -46,3 +46,8 @@ spring:
               authorization-grant-types: ${OAUTH2_EXPERIENCE_CLIENT_AUTHORIZATION_GRANT_TYPES}
               redirect-uris: ${OAUTH2_EXPERIENCE_CLIENT_REDIRECT_URIS}
               scopes: ${OAUTH2_EXPERIENCE_CLIENT_SCOPES}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${REGISTRY_URI}/eureka/
