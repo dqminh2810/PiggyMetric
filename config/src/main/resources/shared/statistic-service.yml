@@ -1,0 +1,18 @@
+server:
+  port: ${SPRING_APPLICATION_PORT}
+
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME}
+  data:
+    mongodb:
+      host: ${MONGO_DB_HOST}
+      port: ${MONGO_DB_PORT}
+      username: ${MONGO_DB_USERNAME}
+      password: ${MONGO_DB_PASSWORD}
+      database: ${MONGO_DB}
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${REGISTRY_URI}/eureka/

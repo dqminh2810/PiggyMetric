@@ -1,7 +1,7 @@
 # PiggyMetrics
 Microservices for personal finance application using Spring technology influenced by `https://github.com/RameshMF/PiggyMetrics/tree/master` with updates for relevant features in newer Spring Boot version `(2.0.3 --> 3.1.2)`, and some adjustments about functional and infra architecture. Build plan is also implemented helping us save some time in build & run phase.
 
-SPA is also developed by Angular framework and deployed separately following client-server architecture, instead of using default static files serving in Spring Boot Tomcat server.
+SPA is also developed by Angular framework and deployed separately following client-server architecture, instead of using default static files serving by Spring Boot Tomcat server.
 
 ## Build & Run
 ### Development environment
@@ -30,4 +30,4 @@ Add these lines to hosts file ****C:\Windows\System32\drivers\etc\hosts folder o
 
 `127.0.0.1 gateway auth-service experience-service account-service notification-service statistic-service account-mongodb auth-mongodb notification-mongodb statistic-mongodb`
 
-Now we are able to access http://gateway:8000 .
+Now we are able to access http://gateway:8000

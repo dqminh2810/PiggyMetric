@@ -14,7 +14,7 @@ function join_by {
     printf %s "$f" "${@/#/$d}"
   fi
 }
-(lsof -i:9000 -t | xargs -r kill && lsof -i:8080 -t | xargs -r kill && lsof -i:8081 -t | xargs -r kill && lsof -i:8082 -t | xargs -r kill && lsof -i:8083 -t | xargs -r kill && lsof -i:8000 -t | xargs -r kill)
+(lsof -i:8888 -t | xargs -r kill && lsof -i:8761 -t | xargs -r kill && lsof -i:9000 -t | xargs -r kill && lsof -i:8080 -t | xargs -r kill && lsof -i:8081 -t | xargs -r kill && lsof -i:8082 -t | xargs -r kill && lsof -i:8083 -t | xargs -r kill && lsof -i:8000 -t | xargs -r kill)
 while [ $# -ne 0 ]; do
     PARAM=`echo $1`
     case $PARAM in
@@ -42,13 +42,14 @@ while [ $# -ne 0 ]; do
     esac
     shift
 done
+echo filename=.env > ./config/src/main/resources/.env.properties &&
+echo filename=.env > ./registry/src/main/resources/.env.properties &&
 echo filename=.env > ./auth-service/src/main/resources/.env.properties &&
 echo filename=.env > ./experience-service/src/main/resources/.env.properties &&
 echo filename=.env > ./account-service/src/main/resources/.env.properties &&
 echo filename=.env > ./notification-service/src/main/resources/.env.properties &&
 echo filename=.env > ./statistic-service/src/main/resources/.env.properties &&
 echo filename=.env > ./gateway/src/main/resources/.env.properties &&
-echo filename=.env > ./registry/src/main/resources/.env.properties &&
 if [[ "$REBUILD" == "true" ]]; then
   if [[ ${multi[@]} != "" ]]; then   # Rebuild on select
     MAVEN_ARGUMENTS="--projects $(join_by , ${multi[@]}) --also-make clean package -DskipTests=true"
@@ -71,5 +72,5 @@ else  # Only init default docker containers without rebuild anything
   echo "Init docker containers" &&
   docker compose down --remove-orphans &&
   yes | docker system prune &&
-  docker compose up --no-build
+  docker-compose up
 fi

@@ -1,0 +1,61 @@
+server:
+  port: ${SPRING_APPLICATION_PORT}
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME}
+  data:
+    mongodb:
+      host: ${MONGO_DB_HOST}
+      port: ${MONGO_DB_PORT}
+      username: ${MONGO_DB_USERNAME}
+      password: ${MONGO_DB_PASSWORD}
+      database: ${MONGO_DB}
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OAUTH2_PROVIDER_ISSUER_URI}
+      client:
+        provider:
+          spring:
+            issuer-uri: ${OAUTH2_PROVIDER_ISSUER_URI}
+#      client:
+#        registration:
+#          notification-client-oauth2-client-credentials:
+#            provider: spring
+#            client-name: ${OAUTH2_NOTIFICATION_CLIENT_NAME}
+#            client-id: ${OAUTH2_NOTIFICATION_CLIENT_ID}
+#            client-secret: ${OAUTH2_NOTIFICATION_CLIENT_SECRET}
+#            client-authorization-method: ${OAUTH2_NOTIFICATION_CLIENT_AUTHENTICATION_METHOD}
+#            authorization-grant-type: ${OAUTH2_NOTIFICATION_CLIENT_AUTHORIZATION_GRANT_TYPE}
+#            scope: ${OAUTH2_NOTIFICATION_CLIENT_SCOPES}
+#          notification-client-oauth2-authorization-code:
+#            provider: spring
+#            client-name: ${OAUTH2_NOTIFICATION_CLIENT_NAME}
+#            client-id: ${OAUTH2_NOTIFICATION_CLIENT_ID}
+#            client-secret: ${OAUTH2_NOTIFICATION_CLIENT_SECRET}
+#            client-authorization-method: ${OAUTH2_NOTIFICATION_CLIENT_AUTHENTICATION_METHOD}
+#            authorization-grant-type: ${OAUTH2_NOTIFICATION_CLIENT_AUTHORIZATION_GRANT_TYPE}
+#            redirect-uri: ${OAUTH2_NOTIFICATION_CLIENT_REDIRECT_URI}
+#            scope: ${OAUTH2_NOTIFICATION_CLIENT_SCOPES}
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+    org.springframework.security: INFO
+    org.springframework.security.oauth2: TRACE
+
+notification:
+  base-uri: ${NOTIFICATION_URI}
+
+feign:
+  client:
+    config:
+      default:
+        loggerLevel: full
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${REGISTRY_URI}/eureka/

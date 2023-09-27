@@ -20,7 +20,6 @@ import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration()
 public class WebSecurityConfig {
-    static final String SESSION_COOKIE_NAME = "GATEWAY_SESSION";
     @Bean
     @Order(1)
     SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http) throws Exception {

@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: ${SPRING_APPLICATION_NAME}
+  cloud:
+    config:
+      uri: ${CONFIG_URI}
+      fail-fast: true

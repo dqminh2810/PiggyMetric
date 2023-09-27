@@ -1,6 +1,13 @@
 version: '3.8'
 services:
   ###SPRING BOOT###
+  config:
+    build: config
+    container_name: config
+    hostname: config
+    restart: always
+    ports:
+      - 8888:8888
   registry:
     build: registry
     container_name: registry
@@ -9,6 +16,7 @@ services:
     ports:
       - 8761:8761
     depends_on:
+      - config
       - gateway
       - experience-service
   gateway:
@@ -19,6 +27,8 @@ services:
     ports:
       - 8000:8000
     depends_on:
+      - config
+      - registry
       - experience-service
   experience-service:
     build: experience-service
@@ -28,6 +38,8 @@ services:
     ports:
       - 8080:8080
     depends_on:
+      - config
+      - registry
       - auth-service
       - account-service
       - notification-service
@@ -40,6 +52,8 @@ services:
     ports:
       - 9000:9000
     depends_on:
+      - config
+      - registry
       - auth-mongodb
   account-service:
     build: account-service
@@ -51,6 +65,8 @@ services:
     links:
       - account-mongodb
     depends_on:
+      - config
+      - registry
       - auth-service
       - account-mongodb
   notification-service:
@@ -63,6 +79,8 @@ services:
     links:
       - notification-mongodb
     depends_on:
+      - config
+      - registry
       - auth-service
       - notification-mongodb
   statistic-service:
@@ -75,6 +93,8 @@ services:
     links:
       - statistic-mongodb
     depends_on:
+      - config
+      - registry
       - auth-service
       - statistic-mongodb
 
