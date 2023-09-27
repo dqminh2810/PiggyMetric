@@ -16,12 +16,12 @@ SPA is also developed by Angular framework and deployed separately following cli
 ### Production environment
 `./init.sh -b <module-name1> <module-name2> ...`
 or
-`./init.sh --rebuild <module-name1> <module-name2> ...` 
+`./init.sh --build <module-name1> <module-name2> ...` 
 
 to rebuild selected module and docker images, if none `module-name` is specified then all modules and docker images will be rebuild. Docker container is initialized after build phase.
 
 `./init.sh` 
-Init docker container and no rebuild if there exist image, else build.
+Init docker container without rebuild if there exist image, else build.
 
 ### Hostname resolver
 In order to access to docker containers by its name from host machine, we need to change the hosts file to map the hostname to point to localhost (127.0.0.1)
