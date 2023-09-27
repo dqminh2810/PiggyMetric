@@ -97,17 +97,17 @@ services:
       - statistic-mongodb
 
   ###MONGODB###
-  notification-mongodb:
-    image: mongo:3
-    container_name: notification-mongodb
-    hostname: notification-mongodb
-    restart: unless-stopped
-#    ports:
-#      - 25000:27017
-    environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+#  notification-mongodb:
+#    image: mongo:3
+#    container_name: notification-mongodb
+#    hostname: notification-mongodb
+#    restart: unless-stopped
+##    ports:
+##      - 25000:27017
+#    environment:
+#      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+#      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+#      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
   account-mongodb:
     build:
       context: .
@@ -122,26 +122,26 @@ services:
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
       - INIT_DUMP=${INIT_DUMP_OAUTH2}
-  statistic-mongodb:
-    image: mongo:3
-    container_name: statistic-mongodb
-    hostname: statistic-mongodb
-    restart: unless-stopped
-#    ports:
-#      - 27000:27017
-    environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
-  auth-mongodb:
-    image: mongo:3
-    container_name: auth-mongodb
-    hostname: auth-mongodb
-    restart: unless-stopped
-#    ports:
-#      - 28000:27017
-    environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+#  statistic-mongodb:
+#    image: mongo:3
+#    container_name: statistic-mongodb
+#    hostname: statistic-mongodb
+#    restart: unless-stopped
+##    ports:
+##      - 27000:27017
+#    environment:
+#      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+#      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+#      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+#  auth-mongodb:
+#    image: mongo:3
+#    container_name: auth-mongodb
+#    hostname: auth-mongodb
+#    restart: unless-stopped
+##    ports:
+##      - 28000:27017
+#    environment:
+#      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE}
+#      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+#      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
 
