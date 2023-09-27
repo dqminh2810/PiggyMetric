@@ -3,7 +3,7 @@
 # ADD ./target/notification-service.jar /app/
 # CMD ["java", "-Xmx200m", "-jar", "/app/notification-service.jar"]
 #
-# EXPOSE 8080
+# EXPOSE 8082
 FROM maven:3.8.4-openjdk-17 as maven-builder
 COPY src /app/src
 COPY pom.xml /app
@@ -13,5 +13,5 @@ FROM openjdk:17-alpine
 COPY --from=maven-builder app/target/*.jar /app/notification-service.jar
 WORKDIR /app
 
-EXPOSE 8080
+EXPOSE 8082
 ENTRYPOINT ["java","-jar","notification-service.jar"]
