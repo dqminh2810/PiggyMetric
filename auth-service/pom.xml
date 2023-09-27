@@ -7,9 +7,13 @@
 	<name>auth-service</name>
 	<description>Authentication and Authorization service</description>
 	<parent>
-		<groupId>com.piggymetrics</groupId>
-		<artifactId>piggymetrics</artifactId>
-		<version>1.0-SNAPSHOT</version>
+<!--		<groupId>com.piggymetrics</groupId>-->
+<!--		<artifactId>piggymetrics</artifactId>-->
+<!--		<version>1.0-SNAPSHOT</version>-->
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.1.2</version>
+		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 
 	<properties>
