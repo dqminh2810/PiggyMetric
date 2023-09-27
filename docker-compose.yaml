@@ -52,7 +52,7 @@ services:
     depends_on:
       - config
       - registry
-      - auth-mongodb
+#      - auth-mongodb
   account-service:
     build: account-service
     container_name: account-service
@@ -80,7 +80,7 @@ services:
       - config
       - registry
       - auth-service
-      - notification-mongodb
+#      - notification-mongodb
   statistic-service:
     build: statistic-service
     container_name: statistic-service
@@ -94,7 +94,7 @@ services:
       - config
       - registry
       - auth-service
-      - statistic-mongodb
+#      - statistic-mongodb
 
   ###MONGODB###
 #  notification-mongodb:
