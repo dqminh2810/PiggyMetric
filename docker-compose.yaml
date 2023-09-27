@@ -17,8 +17,6 @@ services:
       - 8761:8761
     depends_on:
       - config
-      - gateway
-      - experience-service
   gateway:
     build: gateway
     container_name: gateway
