@@ -74,8 +74,8 @@ services:
     restart: always
     ports:
       - 8082:8082
-    links:
-      - notification-mongodb
+#    links:
+#      - notification-mongodb
     depends_on:
       - config
       - registry
@@ -88,8 +88,8 @@ services:
     restart: always
     ports:
       - 8083:8083
-    links:
-      - statistic-mongodb
+#    links:
+#      - statistic-mongodb
     depends_on:
       - config
       - registry
