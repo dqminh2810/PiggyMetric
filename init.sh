@@ -42,14 +42,16 @@ while [ $# -ne 0 ]; do
     esac
     shift
 done
+
 echo filename=.env > ./config/src/main/resources/.env.properties &&
 echo filename=.env > ./registry/src/main/resources/.env.properties &&
+echo filename=.env > ./gateway/src/main/resources/.env.properties &&
 echo filename=.env > ./auth-service/src/main/resources/.env.properties &&
 echo filename=.env > ./experience-service/src/main/resources/.env.properties &&
 echo filename=.env > ./account-service/src/main/resources/.env.properties &&
 echo filename=.env > ./notification-service/src/main/resources/.env.properties &&
 echo filename=.env > ./statistic-service/src/main/resources/.env.properties &&
-echo filename=.env > ./gateway/src/main/resources/.env.properties &&
+
 if [[ "$REBUILD" == "true" ]]; then
   if [[ ${multi[@]} != "" ]]; then   # Rebuild on select
     MAVEN_ARGUMENTS="--projects $(join_by , ${multi[@]}) --also-make clean package -DskipTests=true"
@@ -67,10 +69,9 @@ if [[ "$REBUILD" == "true" ]]; then
   yes | docker system prune &&
   docker compose build $DOCKER_COMPOSE_BUILD_ARGUMENTS &&
   docker compose up --no-build
-
 else  # Only init default docker containers without rebuild anything
   echo "Init docker containers" &&
   docker compose down --remove-orphans &&
   yes | docker system prune &&
-  docker-compose up
+  docker compose up
 fi
