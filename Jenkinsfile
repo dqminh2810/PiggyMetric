@@ -17,6 +17,7 @@ pipeline {
                     cleanWs ()
                     sh '''
                     okteto login --token ${OKTETO_TOKEN}
+                    okteto namespace ${NAMESPACE}
                     '''
                 }
             }
@@ -27,9 +28,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'okteto-token', variable: 'OKTETO_TOKEN')]) {
                     sh '''
                     cd "${DOCKER_COMPOSE_FILE_DIR}"
-                    okteto login --token ${OKTETO_TOKEN}
-                    okteto namespace ${NAMESPACE}
-                    docker comose up --detach
+                    okteto deploy --wait
                     '''
                 }
             }
