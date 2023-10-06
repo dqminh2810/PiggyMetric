@@ -15,8 +15,6 @@ SPA is also developed by Angular framework and deployed separately following cli
 
 ### Production environment
 `./init.sh -b <module-name1> <module-name2> ...`
-or
-`./init.sh --build <module-name1> <module-name2> ...` 
 
 to rebuild selected module and docker images, if none `module-name` is specified then all modules and docker images will be rebuild. Docker container is initialized after build phase.
 
