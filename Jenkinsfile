@@ -13,7 +13,7 @@ pipeline {
 
         stage('Prepare Environment with Okteto') {
             steps {
-                withCredentials([string(credentialsId: 'jenkins-gce', variable: 'OKTETO_TOKEN')]) {
+                withCredentials([string(credentialsId: 'okteto-token', variable: 'OKTETO_TOKEN')]) {
                     cleanWs ()
                     sh '''
                     okteto login --token ${OKTETO_TOKEN}
@@ -24,7 +24,7 @@ pipeline {
 
         stage('Build & deploy docker containers to okteto') {
             steps {
-                withCredentials([string(credentialsId: 'jenkins-gce', variable: 'OKTETO_TOKEN')]) {
+                withCredentials([string(credentialsId: 'okteto-token', variable: 'OKTETO_TOKEN')]) {
                     sh '''
                     cd "${DOCKER_COMPOSE_FILE_DIR}"
                     okteto login --token ${OKTETO_TOKEN}
