@@ -10,7 +10,7 @@ pipeline {
         stage('Prepare Environment with Okteto') {
             steps {
                 withCredentials([string(credentialsId: 'okteto-token', variable: 'OKTETO_TOKEN')]) {
-                    cleanWs ()
+//                     cleanWs ()
                     sh '''
                     okteto login --token ${OKTETO_TOKEN}
                     okteto namespace ${NAMESPACE}
