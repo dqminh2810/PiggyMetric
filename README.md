@@ -1,4 +1,4 @@
-# PiggyMetrics [edit]
+# PiggyMetrics [edi]
 Microservices for personal finance application using Spring technology inspired by `https://github.com/RameshMF/PiggyMetrics/tree/master` with updates for relevant features in newer Spring Boot version `(2.0.3 --> 3.1.2)`, and some adjustments about functional and infra architecture. Build plan is also implemented helping us save some time in build & run phase.
 
 SPA is also developed by Angular framework and deployed separately following client-server architecture, instead of using default static files serving by Spring Boot Tomcat server.
