@@ -49,6 +49,8 @@ services:
     restart: always
     ports:
       - 9000:9000
+    #    links:
+    #      - auth-mongodb
     depends_on:
       - config
       - registry
