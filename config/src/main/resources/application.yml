@@ -1,17 +1,23 @@
 spring:
   application:
-    name: ${SPRING_APPLICATION_NAME}
-  profiles:
-    active: native
+    name: ${SPRING_APPLICATION_NAME:config}
+#  profiles:
+#    active: native
   cloud:
+#    config:
+#      server:
+#        native:
+#          search-locations: classpath:/shared
+
     config:
       server:
-        native:
-          search-locations: classpath:/shared
-#      overrideSystemProperties: false
-#      overrideNone: true
-#        bootstrap: true
-#      enabled: true
-
+        monitor:
+          github:
+            enabled: true
+          gitee:
+            enabled: true
+        git:
+          uri: https://github.com/dqminh2810/PiggyMetricsConfig
+          searchPaths: '{application}'
 server:
-  port: ${SPRING_APPLICATION_PORT}
+  port: ${SPRING_APPLICATION_PORT:8888}

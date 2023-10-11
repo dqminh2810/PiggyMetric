@@ -1,7 +1,7 @@
 spring:
   application:
-    name: ${SPRING_APPLICATION_NAME}
+    name: ${SPRING_APPLICATION_NAME:account-service}
   cloud:
     config:
-      uri: ${CONFIG_URI}
+      uri: ${CONFIG_URI:http://config:8888}
       fail-fast: true
