@@ -52,7 +52,7 @@ services:
     depends_on:
       - config
       - registry
-      - auth-mongodb
+#      - auth-mongodb
   account-service:
     build: account-service
     container_name: account-service
@@ -74,13 +74,13 @@ services:
     restart: always
     ports:
       - 8082:8082
-    links:
-      - notification-mongodb
+#    links:
+#      - notification-mongodb
     depends_on:
       - config
       - registry
       - auth-service
-      - notification-mongodb
+#      - notification-mongodb
   statistic-service:
     build: statistic-service
     container_name: statistic-service
@@ -88,26 +88,15 @@ services:
     restart: always
     ports:
       - 8083:8083
-    links:
-      - statistic-mongodb
+#    links:
+#      - statistic-mongodb
     depends_on:
       - config
       - registry
       - auth-service
-      - statistic-mongodb
+#      - statistic-mongodb
 
   ###MONGODB###
-  notification-mongodb:
-    image: mongo:3
-    container_name: notification-mongodb
-    hostname: notification-mongodb
-    restart: unless-stopped
-#    ports:
-#      - 25000:27017
-    environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
   account-mongodb:
     build:
       context: .
@@ -115,33 +104,44 @@ services:
     container_name: account-mongodb
     hostname: account-mongodb
     restart: unless-stopped
-#    ports:
-#      - 26000:27017
+    #    ports:
+    #      - 26000:27017
     environment:
       - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
       - INIT_DUMP=${INIT_DUMP_OAUTH2-account-service-dump.js}
-  statistic-mongodb:
-    image: mongo:3
-    container_name: statistic-mongodb
-    hostname: statistic-mongodb
-    restart: unless-stopped
-#    ports:
-#      - 27000:27017
-    environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
-  auth-mongodb:
-    image: mongo:3
-    container_name: auth-mongodb
-    hostname: auth-mongodb
-    restart: unless-stopped
-#    ports:
-#      - 28000:27017
-    environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
-      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
-      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
+#  notification-mongodb:
+#    image: mongo:3
+#    container_name: notification-mongodb
+#    hostname: notification-mongodb
+#    restart: unless-stopped
+##    ports:
+##      - 25000:27017
+#    environment:
+#      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
+#      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
+#      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
+#  statistic-mongodb:
+#    image: mongo:3
+#    container_name: statistic-mongodb
+#    hostname: statistic-mongodb
+#    restart: unless-stopped
+##    ports:
+##      - 27000:27017
+#    environment:
+#      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
+#      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
+#      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
+#  auth-mongodb:
+#    image: mongo:3
+#    container_name: auth-mongodb
+#    hostname: auth-mongodb
+#    restart: unless-stopped
+##    ports:
+##      - 28000:27017
+#    environment:
+#      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
+#      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
+#      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
 
