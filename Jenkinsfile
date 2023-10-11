@@ -23,7 +23,7 @@ pipeline {
                 withCredentials([string(credentialsId: 'okteto-token', variable: 'OKTETO_TOKEN')]) {
                     sh '''
                     cd "${DOCKER_COMPOSE_FILE_DIR}"
-                    okteto deploy --wait
+                    okteto deploy --build --wait
                     '''
                 }
             }
