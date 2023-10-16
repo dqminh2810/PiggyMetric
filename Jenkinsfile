@@ -19,16 +19,14 @@ pipeline {
                     okteto login --token ${OKTETO_TOKEN}
                     '''
                 }
-                if (params.PROD_ENV) {
-                    sh '''
-                    okteto login --token ${OKTETO_TOKEN}
-                    okteto namespace ${PROD_NAMESPACE}
-                    '''
-               } else {
-                    sh '''
-                    okteto login --token ${OKTETO_TOKEN}
-                    okteto namespace ${DEV_NAMESPACE}
-                    '''
+                script {
+                    if (params.PROD_ENV) {
+                        okteto login --token ${OKTETO_TOKEN}
+                        okteto namespace ${PROD_NAMESPACE}
+                   } else {
+                        okteto login --token ${OKTETO_TOKEN}
+                        okteto namespace ${DEV_NAMESPACE}
+                   }
                }
             }
         }
