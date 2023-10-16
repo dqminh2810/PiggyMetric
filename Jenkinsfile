@@ -10,7 +10,6 @@ pipeline {
         stage('Prepare Environment with Okteto') {
             steps {
                  echo $PROD_ENV
-                }
             }
         }
         stage('Prepare Environment with Okteto') {
