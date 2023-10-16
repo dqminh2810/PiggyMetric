@@ -13,20 +13,23 @@ pipeline {
         }
         stage('Prepare Environment with Okteto') {
             steps {
+                // cleanWs ()
                 withCredentials([string(credentialsId: 'okteto-token', variable: 'OKTETO_TOKEN')]) {
-//                     cleanWs ()
-                    if(params.PROD_ENV){
-                        sh '''
-                        okteto login --token ${OKTETO_TOKEN}
-                        okteto namespace ${PROD_NAMESPACE}
-                        '''
-                    } else {
-                        sh '''
-                        okteto login --token ${OKTETO_TOKEN}
-                        okteto namespace ${DEV_NAMESPACE}
-                        '''
-                    }
+                    sh '''
+                    okteto login --token ${OKTETO_TOKEN}
+                    '''
                 }
+                if (params.PROD_ENV) {
+                    sh '''
+                    okteto login --token ${OKTETO_TOKEN}
+                    okteto namespace ${PROD_NAMESPACE}
+                    '''
+               } else {
+                    sh '''
+                    okteto login --token ${OKTETO_TOKEN}
+                    okteto namespace ${DEV_NAMESPACE}
+                    '''
+               }
             }
         }
         stage('Build & deploy docker containers to okteto') {
