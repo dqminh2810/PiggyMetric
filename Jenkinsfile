@@ -7,7 +7,6 @@ pipeline {
         NAMESPACE = 'piggy-metric-dqminh2810'
     }
     stages {
-        //PROD_ENV
         stage('Prepare Environment with Okteto') {
             steps {
                  echo $PROD_ENV
