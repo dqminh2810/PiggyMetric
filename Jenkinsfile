@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Test varibale environment') {
             steps {
-                 echo $PROD_ENV
+                 echo ${PROD_ENV}
             }
         }
         stage('Prepare Environment with Okteto') {
