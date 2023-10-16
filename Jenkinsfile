@@ -21,13 +21,17 @@ pipeline {
                 }
                 script {
                     if (params.PROD_ENV) {
+                        sh '''
                         okteto login --token ${OKTETO_TOKEN}
                         echo "${PROD_NAMESPACE}"
                         okteto namespace ${PROD_NAMESPACE}
+                        '''
                    } else {
+                        sh '''
                         okteto login --token ${OKTETO_TOKEN}
                         echo "${DEV_NAMESPACE}"
                         okteto namespace ${DEV_NAMESPACE}
+                        '''
                    }
                }
             }
