@@ -1,8 +1,5 @@
-# PiggyMetrics [edi]
-Microservices for personal finance application using Spring technology inspired by `https://github.com/RameshMF/PiggyMetrics/tree/master` with updates for relevant features in newer Spring Boot version `(2.0.3 --> 3.1.2)`, and some adjustments about functional and infra architecture. Build plan is also implemented helping us save some time in build & run phase.
-
-SPA is also developed by Angular framework and deployed separately following client-server architecture, instead of using default static files serving by Spring Boot Tomcat server.
-
+# Description
+Microservices for personal finance application developed by Spring Boot 3
 ## Build & Run
 ### Development environment
 `docker-compose down --remove-orphans`
@@ -16,7 +13,7 @@ SPA is also developed by Angular framework and deployed separately following cli
 ### Production environment
 `./init.sh -b <module-name1> <module-name2> ...`
 
-to rebuild selected module and docker images, if none `module-name` is specified then all modules and docker images will be rebuild. Docker container is initialized after build phase.
+Rebuild selected module and docker images, if none `module-name` is specified then all modules and docker images will be rebuild. Docker container is initialized after build phase.
 
 `./init.sh` 
 Init docker container without rebuild if there exist image, else build.
