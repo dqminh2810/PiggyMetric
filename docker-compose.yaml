@@ -106,8 +106,8 @@ services:
     container_name: account-mongodb
     hostname: account-mongodb
     restart: unless-stopped
-    #    ports:
-    #      - 26000:27017
+    ports:
+      - 27017:27017
     environment:
       - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
