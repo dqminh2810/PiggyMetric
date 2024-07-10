@@ -5,6 +5,8 @@ import com.piggymetrics.account.domain.User;
 import com.piggymetrics.account.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 import java.util.Spliterator;
@@ -19,21 +21,22 @@ public class AccountServiceImpl implements AccountService{
     private AccountRepository repository;
 
     @Override
-    public List<Account> findAll() {
-        return StreamSupport.stream(Spliterators.spliteratorUnknownSize((repository.findAll().iterator()), Spliterator.ORDERED), false).collect(Collectors.toList());
+    public Flux<Account> findAll() {
+        //return StreamSupport.stream(Spliterators.spliteratorUnknownSize((repository.findAll().iterator()), Spliterator.ORDERED), false).collect(Collectors.toList());
+        return repository.findAll();
     }
     @Override
-    public Account findByName(String accountName) {
+    public Mono<Account> findByName(String accountName) {
         return null;
     }
 
     @Override
-    public Account create(User user) {
+    public Mono<Account> create(User user) {
         return null;
     }
 
     @Override
-    public void saveChanges(String name, Account update) {
-
+    public Mono<Void> saveChanges(String name, Account update) {
+        return null;
     }
 }
