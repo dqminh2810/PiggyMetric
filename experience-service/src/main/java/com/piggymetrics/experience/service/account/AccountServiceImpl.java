@@ -5,7 +5,6 @@ import com.piggymetrics.experience.client.AccountServiceFeignClient;
 import com.piggymetrics.experience.domain.account.Account;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service

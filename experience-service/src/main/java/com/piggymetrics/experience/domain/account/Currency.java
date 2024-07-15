@@ -1,5 +1,4 @@
 package com.piggymetrics.experience.domain.account;
-
 public enum Currency {
     USD, EUR, RUB;
     

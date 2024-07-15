@@ -1,8 +1,6 @@
 package com.piggymetrics.experience.domain.account;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-
 import java.util.Date;
 import java.util.List;
 

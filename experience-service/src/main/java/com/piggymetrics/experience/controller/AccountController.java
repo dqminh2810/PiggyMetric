@@ -9,18 +9,22 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-//@RestController
-//@RequestMapping("/account")
+@RestController
+@RequestMapping("/account")
 public class AccountController {
-//    @Autowired
-//    AccountService accountService;
-//
-//    @GetMapping(path="/feign/all")
-//    public List<Account> getAccountsByFeign(){
-//        return accountService.getAccounts();
-//    }
-//    @GetMapping()
-//    public String welcomeAccount(){
-//        return accountService.welcomeAccount();
-//    }
+    @Autowired
+    AccountService accountService;
+
+    @GetMapping()
+    public String welcomeAccount(){
+        return accountService.welcomeAccount();
+    }
+    @GetMapping("/feign/all")
+    public List<Account> getAccountsByFeign(){
+        return accountService.getAccounts();
+    }
+    @GetMapping("/token")
+    public String getToken(){
+        return accountService.getToken();
+    }
 }
