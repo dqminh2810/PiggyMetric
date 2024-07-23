@@ -26,3 +26,7 @@ Add these lines to hosts file ****C:\Windows\System32\drivers\etc\hosts folder o
 `127.0.0.1 gateway auth-service experience-service account-service notification-service statistic-service account-mongodb auth-mongodb notification-mongodb statistic-mongodb`
 
 Now we are able to access http://gateway:8000
+
+### Reference
+Components architecture and also workflow described by the link bellow
+https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=PM.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1nmZasrVd5d0Cm0rj1czmavtlG8exHV45%26export%3Ddownload
