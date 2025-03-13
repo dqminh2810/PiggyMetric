@@ -1,5 +1,3 @@
-# Description
-Microservices for personal finance application developed by Spring Boot 3
 ## Build & Run
 ### Development environment
 `docker-compose down --remove-orphans`
