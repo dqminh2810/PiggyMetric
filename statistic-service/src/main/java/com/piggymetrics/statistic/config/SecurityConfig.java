@@ -1,4 +1,4 @@
-package com.piggymetrics.notification.config;
+package com.piggymetrics.statistic.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +14,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) ->
                 {
                     auth.requestMatchers("/actuator/**").permitAll();
-                    auth.requestMatchers("/**").hasAuthority("SCOPE_notification.read");
+                    auth.requestMatchers("/**").hasAuthority("SCOPE_statistic.read");
                     auth.anyRequest().authenticated();
                 })
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults()));

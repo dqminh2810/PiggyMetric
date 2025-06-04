@@ -1,18 +1,6 @@
-# FROM openjdk:17-jdk-slim-buster
-#
-# ADD ./target/config.jar /app/
-# CMD ["java", "-Xmx200m", "-jar", "/app/config.jar"]
-#
-# EXPOSE 8888
-
-FROM maven:3.8.4-openjdk-17 as maven-builder
-COPY src /app/src
-COPY pom.xml /app
-RUN mvn -f /app/pom.xml clean package -DskipTests
-
 FROM openjdk:17-alpine
-COPY --from=maven-builder app/target/*.jar /app/config.jar
+RUN apk add --no-cache curl
 WORKDIR /app
-
+COPY target/*.jar app.jar
 EXPOSE 8888
-ENTRYPOINT ["java","-jar","config.jar"]
+ENTRYPOINT ["java","-jar","app.jar"]
