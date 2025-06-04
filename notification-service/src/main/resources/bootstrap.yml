@@ -3,5 +3,6 @@ spring:
     name: ${SPRING_APPLICATION_NAME:notification-service}
   cloud:
     config:
+#      uri: ${CONFIG_URI:http://localhost:8888}
       uri: ${CONFIG_URI:http://config:8888}
       fail-fast: true

@@ -32,3 +32,9 @@ bin/
 
 ### .env ###
 **/.env
+
+### grafana ###
+grafana/data/plugins/**
+grafana/data/csv/
+grafana/data/pdf/
+grafana/data/png/
