@@ -2,6 +2,9 @@
 # Description
 Microservices for finance by Spring Boot 3
 
+## Build Maven
+mvn clean package -DskipTests 
+
 ## Build & Run Docker containers
 - Micro services & databases
 `docker-compose --profile db --profile ms up`
