@@ -4,17 +4,18 @@ pipeline {
     stages {
         stage('Check env') {
             steps {
-                 echo "Node name is $NODE_NAME"
-                 echo "Job name is $JOB_NAME"
-                 java --version
-                 mvn --version
+                sh '''
+                    echo "Node name is $NODE_NAME"
+                    echo "Job name is $JOB_NAME"
+                    java --version
+                    mvn --version
+                '''
             }
         }
         stage('Build Maven project') {
-                    steps {
-                         mvn clean package -DskipTests
-                    }
-                }
+            steps {
+                mvn clean package -DskipTests
+            }
+        }
     }
 }
-v
