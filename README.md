@@ -16,7 +16,7 @@ Docker containers communicate by Docker network and use their hostname in docker
 In order to access to docker containers by their own name from host we need to change the hosts file to map their hostname to point to localhost
 
 ****C:\Windows\System32\drivers\etc\hosts folder on Windows & /etc/hosts on Linux****
-`127.0.0.1 gateway auth-service experience-service account-service notification-service statistic-service account-mongodb auth-mongodb notification-mongodb statistic-mongodb`
+`127.0.0.1 gateway auth-service experience-service account-service notification-service statistic-service account-mongodb notification-mongodb statistic-mongodb`
 
 ## Reference
 Components architecture and also workflow described by the link bellow
