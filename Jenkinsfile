@@ -6,17 +6,18 @@ pipeline {
                 sh '''
                     echo "Node name is $NODE_NAME"
                     echo "Job name is $JOB_NAME"
+                    hostname -I
                     java --version
                     mvn --version
                 '''
             }
         }
-        stage('Build Maven project') {
-            steps {
-                sh '''
-                    mvn clean package -DskipTests
-                '''
-            }
-        }
+//         stage('Build Maven project') {
+//             steps {
+//                 sh '''
+//                     mvn clean package -DskipTests
+//                 '''
+//             }
+//         }
     }
 }
