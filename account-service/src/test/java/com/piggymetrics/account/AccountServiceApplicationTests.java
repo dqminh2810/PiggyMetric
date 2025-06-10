@@ -8,6 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles(profiles = { "test" })
 class AccountServiceApplicationTests {
 	@Test
-	void contextLoads() {
+	void test() {
+
 	}
 }

@@ -1,48 +1,20 @@
 pipeline {
-    agent any
-    environment {
-        DOCKER_COMPOSE_FILE_DIR = '/data/workspace/PiggyMetrics'
-        DEV_NAMESPACE = 'piggy-metric-dev-dqminh2810'
-        PROD_NAMESPACE = 'piggy-metric-prod-dqminh2810'
-    }
+    agent {label "jenkins-agent"}
+
     stages {
-        stage('Test varibale environment') {
+        stage('Check env') {
             steps {
-                 echo "${PROD_ENV}"
+                 echo "Node name is $NODE_NAME"
+                 echo "Job name is $JOB_NAME"
+                 java --version
+                 mvn --version
             }
         }
-        stage('Prepare Environment with Okteto') {
-            steps {
-                // cleanWs ()
-                withCredentials([string(credentialsId: 'okteto-token', variable: 'OKTETO_TOKEN')]) {
-                    sh '''
-                    okteto login --token ${OKTETO_TOKEN}
-                    '''
+        stage('Build Maven project') {
+                    steps {
+                         mvn clean package -DskipTests
+                    }
                 }
-                script {
-                    if (params.PROD_ENV) {
-                        sh '''
-                        echo "${PROD_NAMESPACE}"
-                        okteto namespace ${PROD_NAMESPACE}
-                        '''
-                   } else {
-                        sh '''
-                        echo "${DEV_NAMESPACE}"
-                        okteto namespace ${DEV_NAMESPACE}
-                        '''
-                   }
-               }
-            }
-        }
-        stage('Build & deploy docker containers to okteto') {
-            steps {
-                withCredentials([string(credentialsId: 'okteto-token', variable: 'OKTETO_TOKEN')]) {
-                    sh '''
-                    cd "${DOCKER_COMPOSE_FILE_DIR}"
-                    okteto deploy --build --wait
-                    '''
-                }
-            }
-        }
     }
 }
+v
