@@ -1,6 +1,5 @@
 pipeline {
     agent {label "jenkins-agent"}
-
     stages {
         stage('Check env') {
             steps {
