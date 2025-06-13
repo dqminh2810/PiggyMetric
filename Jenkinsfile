@@ -23,7 +23,7 @@ pipeline {
                                 curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
                                 -H "Accept: application/vnd.github.v3+json" \\
                                 "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
-                                -d '{"state": "\'SUCCESS\''", "target_url": "${env.BUILD_URL}", "description": "\'Build successful!\''", "context": "\'Jenkins Build\'"}'
+                                -d '{"state": "success", "target_url": "${env.BUILD_URL}", "description": "Build successful!", "context": "Jenkins Build"}'
                             """
                         }
                     }
@@ -35,7 +35,7 @@ pipeline {
                                 curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
                                 -H "Accept: application/vnd.github.v3+json" \\
                                 "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
-                                -d '{"state": "\'FAILURE\''", "target_url": "${env.BUILD_URL}", "description": "\'Build failed!\''", "context": "\'Jenkins Build\'"}'
+                                -d '{"state": "failure", "target_url": "${env.BUILD_URL}", "description": "Build failed!", "context": "Jenkins Build"}'
                             """
                         }
                     }
