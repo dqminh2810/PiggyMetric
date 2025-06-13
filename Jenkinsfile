@@ -7,6 +7,7 @@ pipeline {
         // Ensure these are defined if not provided by plugins
         GITHUB_ORGANIZATION = "dqminh2810"
         GITHUB_REPO = "PiggyMetric"
+        GITHUB_CREDENTIAL_ID = "github-api"
     }
 
     stages {
@@ -59,6 +60,7 @@ pipeline {
                         message: 'Checkout env successful!',
                         targetUrl: env.BUILD_URL,
                         commit: env.GIT_COMMIT,
+                        credentialsId: env.GITHUB_CREDENTIAL_ID,
                         githubOrganization: env.GITHUB_ORGANIZATION,
                         githubRepository: env.GITHUB_REPO
                     )
@@ -70,6 +72,7 @@ pipeline {
                         message: 'Checkout env failed!',
                         targetUrl: env.BUILD_URL,
                         commit: env.GIT_COMMIT,
+                        credentialsId: env.GITHUB_CREDENTIAL_ID,
                         githubOrganization: env.GITHUB_ORGANIZATION,
                         githubRepository: env.GITHUB_REPO
                     )
