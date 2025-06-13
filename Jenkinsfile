@@ -54,6 +54,7 @@ pipeline {
                     // Option 1: Basic commit status (requires GitHub Plugin)
                     sh "curl -X POST -H 'Authorization: token ${env.GITHUB_TOKEN}' -H 'Accept: application/vnd.github.v3+json' https://api.github.com/repos/${env.GIT_URL_1_SLASHLESS}/statuses/${env.GIT_COMMIT} -d '{\"state\": \"${buildStatus}\", \"target_url\": \"${env.BUILD_URL}\", \"description\": \"${description}\", \"context\": \"Jenkins CI / Build\"}'"
 
+
                     // Option 2: Using the GitHub Checks API Plugin (more modern, richer UI)
                     // This typically requires a GitHub App setup for better authentication and permissions
                     /*
