@@ -1,6 +1,12 @@
 pipeline {
     agent {label "jenkins-agent"}
 
+    environment {
+        // Ensure these are defined if not provided by plugins
+        GITHUB_ORGANIZATION = "dqminh2810"
+        GITHUB_REPO = "PiggyMetric"
+    }
+
     stages {
         stage('Build') {
             steps {
