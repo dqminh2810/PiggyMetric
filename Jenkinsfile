@@ -25,6 +25,7 @@ pipeline {
                         message: 'Checkout scm successful!',
                         targetUrl: env.BUILD_URL,
                         commit: env.GIT_COMMIT,
+                        credentialsId: env.GITHUB_CREDENTIAL_ID,
                         githubOrganization: env.GITHUB_ORGANIZATION,
                         githubRepository: env.GITHUB_REPO
                     )
@@ -36,6 +37,7 @@ pipeline {
                         message: 'Checkout scm failed!',
                         targetUrl: env.BUILD_URL,
                         commit: env.GIT_COMMIT,
+                        credentialsId: env.GITHUB_CREDENTIAL_ID,
                         githubOrganization: env.GITHUB_ORGANIZATION,
                         githubRepository: env.GITHUB_REPO
                     )
