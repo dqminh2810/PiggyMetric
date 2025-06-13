@@ -8,12 +8,10 @@ pipeline {
     }
 
     stages {
-        stage('Build') {
+        stage('Checkout') {
             steps {
                 // Example: Checkout code to ensure GIT_COMMIT is available
                 git branch: 'main', credentialsId: 'github-api', url: "https://github.com/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}.git"
-                sh 'echo "Running build..."'
-                // ... your build steps ...
             }
             post {
                 success {
@@ -23,7 +21,7 @@ pipeline {
                                 curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
                                 -H "Accept: application/vnd.github.v3+json" \\
                                 "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
-                                -d '{"state": "success", "target_url": "${env.BUILD_URL}", "description": "Build successful!", "context": "Jenkins Build"}'
+                                -d '{"state": "success", "target_url": "${env.BUILD_URL}", "description": "checkout scm successful!", "context": "Jenkins checkout scm"}'
                             """
                         }
                     }
@@ -35,13 +33,50 @@ pipeline {
                                 curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
                                 -H "Accept: application/vnd.github.v3+json" \\
                                 "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
-                                -d '{"state": "failure", "target_url": "${env.BUILD_URL}", "description": "Build failed!", "context": "Jenkins Build"}'
+                                -d '{"state": "failure", "target_url": "${env.BUILD_URL}", "description": "checkout scm failed!", "context": "Jenkins checkout scm"}'
                             """
                         }
                     }
                 }
             }
         }
+        stage('Check ENV') {
+                    steps {
+                        sh '''
+                            echo "Node name is $NODE_NAME"
+                            echo "Job name is $JOB_NAME"
+                            hostname -I
+                            java --version
+                            mvn --version
+                        '''
+                    }
+                    post {
+                        success {
+                            script { // <--- Wrap in a script block
+                                withCredentials([string(credentialsId: 'github-api', variable: 'GITHUB_TOKEN')]) {
+                                    sh """
+                                        curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
+                                        -H "Accept: application/vnd.github.v3+json" \\
+                                        "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
+                                        -d '{"state": "success", "target_url": "${env.BUILD_URL}", "description": "check env successful!", "context": "Jenkins check env"}'
+                                    """
+                                }
+                            }
+                        }
+                        failure {
+                            script { // <--- Wrap in a script block
+                                withCredentials([string(credentialsId: 'github-api', variable: 'GITHUB_TOKEN')]) {
+                                    sh """
+                                        curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
+                                        -H "Accept: application/vnd.github.v3+json" \\
+                                        "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
+                                        -d '{"state": "failure", "target_url": "${env.BUILD_URL}", "description": "check env failed!", "context": "Jenkins check env"}'
+                                    """
+                                }
+                            }
+                        }
+                    }
+                }
     }
 }
 
