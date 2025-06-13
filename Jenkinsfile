@@ -5,7 +5,7 @@ pipeline {
         stage('Build') {
             steps {
                 // Example: Checkout code to ensure GIT_COMMIT is available
-                git branch: 'main', credentialsId: 'your-github-credential-id', url: "https://github.com/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}.git"
+                git branch: 'main', credentialsId: 'github-api', url: "https://github.com/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}.git"
                 sh 'echo "Running build..."'
                 // ... your build steps ...
             }
