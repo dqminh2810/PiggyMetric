@@ -1,3 +1,5 @@
+@Library('test-job-agent-2-libs')
+
 pipeline {
     agent {label "jenkins-agent"}
 
@@ -12,85 +14,67 @@ pipeline {
             steps {
                 // Example: Checkout code to ensure GIT_COMMIT is available
                 git branch: 'main', credentialsId: 'github-api', url: "https://github.com/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}.git"
+                sh 'echo "Checkout scm..."'
             }
             post {
                 success {
-                    script { // <--- Wrap in a script block
-                        withCredentials([string(credentialsId: 'github-api', variable: 'GITHUB_TOKEN')]) {
-                            sh """
-                                curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
-                                -H "Accept: application/vnd.github.v3+json" \\
-                                "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
-                                -d '{"state": "success", "target_url": "${env.BUILD_URL}", "description": "checkout scm successful!", "context": "Jenkins checkout scm"}'
-                            """
-                        }
-                    }
+                    githubStatus(
+                        status: 'success',
+                        context: 'Jenkins checkout scm',
+                        message: 'Checkout scm successful!',
+                        targetUrl: env.BUILD_URL,
+                        commit: env.GIT_COMMIT,
+                        githubOrganization: env.GITHUB_ORGANIZATION,
+                        githubRepository: env.GITHUB_REPO
+                    )
                 }
                 failure {
-                    script { // <--- Wrap in a script block
-                        withCredentials([string(credentialsId: 'github-api', variable: 'GITHUB_TOKEN')]) {
-                            sh """
-                                curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
-                                -H "Accept: application/vnd.github.v3+json" \\
-                                "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
-                                -d '{"state": "failure", "target_url": "${env.BUILD_URL}", "description": "checkout scm failed!", "context": "Jenkins checkout scm"}'
-                            """
-                        }
-                    }
+                    githubStatus(
+                        status: 'failure',
+                        context: 'Jenkins checkout scm',
+                        message: 'Checkout scm failed!',
+                        targetUrl: env.BUILD_URL,
+                        commit: env.GIT_COMMIT,
+                        githubOrganization: env.GITHUB_ORGANIZATION,
+                        githubRepository: env.GITHUB_REPO
+                    )
                 }
             }
         }
         stage('Check ENV') {
-                    steps {
-                        sh '''
-                            echo "Node name is $NODE_NAME"
-                            echo "Job name is $JOB_NAME"
-                            hostname -I
-                            java --version
-                            mvn --version
-                        '''
-                    }
-                    post {
-                        success {
-                            script { // <--- Wrap in a script block
-                                withCredentials([string(credentialsId: 'github-api', variable: 'GITHUB_TOKEN')]) {
-                                    sh """
-                                        curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
-                                        -H "Accept: application/vnd.github.v3+json" \\
-                                        "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
-                                        -d '{"state": "success", "target_url": "${env.BUILD_URL}", "description": "check env successful!", "context": "Jenkins check env"}'
-                                    """
-                                }
-                            }
-                        }
-                        failure {
-                            script { // <--- Wrap in a script block
-                                withCredentials([string(credentialsId: 'github-api', variable: 'GITHUB_TOKEN')]) {
-                                    sh """
-                                        curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
-                                        -H "Accept: application/vnd.github.v3+json" \\
-                                        "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${env.GIT_COMMIT}" \\
-                                        -d '{"state": "failure", "target_url": "${env.BUILD_URL}", "description": "check env failed!", "context": "Jenkins check env"}'
-                                    """
-                                }
-                            }
-                        }
-                    }
+            steps {
+                sh '''
+                    echo "Node name is $NODE_NAME"
+                    echo "Job name is $JOB_NAME"
+                    hostname -I
+                    java --version
+                    mvn --version
+                '''
+            }
+            post {
+                success {
+                    githubStatus(
+                        status: 'success',
+                        context: 'Jenkins checkout env',
+                        message: 'Checkout env successful!',
+                        targetUrl: env.BUILD_URL,
+                        commit: env.GIT_COMMIT,
+                        githubOrganization: env.GITHUB_ORGANIZATION,
+                        githubRepository: env.GITHUB_REPO
+                    )
                 }
+                failure {
+                    githubStatus(
+                        status: 'failure',
+                        context: 'Jenkins checkout env',
+                        message: 'Checkout env failed!',
+                        targetUrl: env.BUILD_URL,
+                        commit: env.GIT_COMMIT,
+                        githubOrganization: env.GITHUB_ORGANIZATION,
+                        githubRepository: env.GITHUB_REPO
+                    )
+                }
+            }
+        }
     }
 }
-
-// Define the function within the Jenkinsfile, but outside the 'pipeline' block itself.
-// It needs to be a global function or part of a 'script' block.
-// For a Declarative Pipeline, defining it outside the 'pipeline' block is fine for simplicity.
-// When called from within a 'script' block, the Groovy interpreter handles it.
-// void updateGithubCommitStatus(String status, String context, String message, String targetUrl, String commit) {
-//     withCredentials([string(credentialsId: 'github-api', variable: 'GITHUB_TOKEN')]) {
-//         sh """
-//             curl -X POST -H "Authorization: token $GITHUB_TOKEN" \\
-//             -H "Accept: application/vnd.github.v3+json" \\
-//             "https://api.github.com/repos/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}/statuses/${commit}" \\
-//             -d '{"state": "${status.toLowerCase()}", "target_url": "${targetUrl}", "description": "${message}", "context": "${context}"}'
-//         """
-//     }
-// }
