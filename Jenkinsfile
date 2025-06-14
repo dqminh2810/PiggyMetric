@@ -42,6 +42,7 @@ pipeline {
                 }
             }
         }
+
         stage('Check ENV') {
             steps {
                 sh '''
@@ -79,6 +80,7 @@ pipeline {
                 }
             }
         }
+
         stage('Build maven') {
             steps {
                 sh '''
@@ -113,6 +115,7 @@ pipeline {
                 }
             }
         }
+
         stage('Unit test') {
             steps {
                 sh '''
