@@ -79,43 +79,6 @@ pipeline {
                 }
             }
         }
-        stage('Check ENV') {
-                    steps {
-                        sh '''
-                            echo "Node name is $NODE_NAME"
-                            echo "Job name is $JOB_NAME"
-                            hostname -I
-                            java --version
-                            mvn --version
-                        '''
-                    }
-                    post {
-                        success {
-                            githubStatus(
-                                status: 'success',
-                                context: 'Jenkins checkout env',
-                                message: 'Checkout env successful!',
-                                targetUrl: env.BUILD_URL,
-                                commit: env.GIT_COMMIT,
-                                credentialsId: env.GITHUB_CREDENTIAL_ID,
-                                githubOrganization: env.GITHUB_ORGANIZATION,
-                                githubRepository: env.GITHUB_REPO
-                            )
-                        }
-                        failure {
-                            githubStatus(
-                                status: 'failure',
-                                context: 'Jenkins checkout env',
-                                message: 'Checkout env failed!',
-                                targetUrl: env.BUILD_URL,
-                                commit: env.GIT_COMMIT,
-                                credentialsId: env.GITHUB_CREDENTIAL_ID,
-                                githubOrganization: env.GITHUB_ORGANIZATION,
-                                githubRepository: env.GITHUB_REPO
-                            )
-                        }
-                    }
-                }
         stage('Build maven') {
             steps {
                 sh '''
@@ -150,7 +113,6 @@ pipeline {
                 }
             }
         }
-
         stage('Unit test') {
             steps {
                 sh '''
