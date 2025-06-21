@@ -10,39 +10,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                git branch: 'main', credentialsId: 'github-api', url: "https://github.com/${env.GITHUB_ORGANIZATION}/${env.GITHUB_REPO}.git"
-                sh 'echo "Checkout scm..."'
-            }
-            post {
-                success {
-                    githubStatus(
-                        status: 'success',
-                        context: 'Jenkins checkout scm',
-                        message: 'Checkout scm successful!',
-                        targetUrl: env.BUILD_URL,
-                        commit: env.GIT_COMMIT,
-                        credentialsId: env.GITHUB_CREDENTIAL_ID,
-                        githubOrganization: env.GITHUB_ORGANIZATION,
-                        githubRepository: env.GITHUB_REPO
-                    )
-                }
-                failure {
-                    githubStatus(
-                        status: 'failure',
-                        context: 'Jenkins checkout scm',
-                        message: 'Checkout scm failed!',
-                        targetUrl: env.BUILD_URL,
-                        commit: env.GIT_COMMIT,
-                        credentialsId: env.GITHUB_CREDENTIAL_ID,
-                        githubOrganization: env.GITHUB_ORGANIZATION,
-                        githubRepository: env.GITHUB_REPO
-                    )
-                }
-            }
-        }
-
         stage('Check ENV') {
             steps {
                 sh '''
