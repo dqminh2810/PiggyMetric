@@ -26,4 +26,4 @@ In order to access to docker containers by their own name from host we need to c
 
 ### OAuthFlow architecture
 
-![OAuthFlow_architecture]()
+![OAuthFlow_architecture](https://github.com/dqminh2810/PiggyMetric/blob/main/docs/PM-OauthAppFlow.jpg)
