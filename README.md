@@ -18,7 +18,12 @@ In order to access to docker containers by their own name from host we need to c
 ****C:\Windows\System32\drivers\etc\hosts folder on Windows & /etc/hosts on Linux****
 `127.0.0.1 gateway auth-service experience-service account-service notification-service statistic-service account-mongodb notification-mongodb statistic-mongodb`
 
-## Reference
-Components architecture and also workflow described by the link bellow
+## ARCHITECTURE
 
-[DIAGRAM](https://viewer.diagrams.net/?tags=%7B%7D&lightbox=1&highlight=0000ff&edit=_blank&layers=1&nav=1&title=PM.drawio#Uhttps%3A%2F%2Fdrive.google.com%2Fuc%3Fid%3D1nmZasrVd5d0Cm0rj1czmavtlG8exHV45%26export%3Ddownload)
+### Components architecture
+
+![Components_architecture](https://github.com/dqminh2810/PiggyMetric/blob/main/docs/PM-Components-Architecture.jpg)
+
+### OAuthFlow architecture
+
+![OAuthFlow_architecture]()
