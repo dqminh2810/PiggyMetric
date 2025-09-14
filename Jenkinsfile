@@ -15,12 +15,6 @@ pipeline {
   }
 
   stages {
-    stage('Checkout Code') {
-      steps {
-        checkout scm
-      }
-    }
-
     stage('Check ENV') {
         steps {
             sh '''
