@@ -1,8 +1,8 @@
 //@Library('test-job-agent-2-libs') _
 
 pipeline {
-  agent { label 'built-in' }
-  //agent {label "jenkins-agent"}
+  //agent { label 'built-in' }
+  agent {label "jenkins-agent"}
 
   environment {
     GITHUB_ORGANIZATION = "dqminh2810"
@@ -26,7 +26,6 @@ pipeline {
                 java --version
                 mvn --version
                 docker info
-                kubectl version
             '''
         }
     }
