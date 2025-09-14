@@ -8,6 +8,7 @@ pipeline {
     GITHUB_ORGANIZATION = "dqminh2810"
     GITHUB_REPO = "PiggyMetric"
     GITHUB_CREDENTIAL_ID = "github-api"
+    WORKSPACE = "${env.WORKSPACE}"
     IMAGE_NAME = 'dqminh2810/hello-world-piggy_experience-service'
     IMAGE_TAG = "v${env.BUILD_NUMBER}"
     DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
@@ -27,6 +28,7 @@ pipeline {
                 java --version
                 mvn --version
                 docker info
+                echo "${WORKSPACE}"
             '''
         }
     }
