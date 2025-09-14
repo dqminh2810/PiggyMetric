@@ -18,10 +18,11 @@ pipeline {
     stage('Check ENV') {
         steps {
             sh '''
-                echo "Node name is $NODE_NAME"
-                echo "Job name is $JOB_NAME"
+                echo "NODE_NAME is $NODE_NAME"
+                echo "JOB_NAME is $JOB_NAME"
                 echo "IMAGE_NAME is $IMAGE_NAME"
                 echo "IMAGE_TAG is $IMAGE_TAG"
+                echo "USER is $USER"
                 hostname -I
                 java --version
                 mvn --version
