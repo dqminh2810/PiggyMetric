@@ -43,6 +43,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         script {
+          sh 'cd ${WORKSPACE}/experience-service'
           dockerImage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
         }
       }
@@ -51,6 +52,7 @@ pipeline {
     stage('Push Docker Image') {
       steps {
         script {
+          sh 'cd ${WORKSPACE}/experience-service'
           docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
             dockerImage.push()
           }
