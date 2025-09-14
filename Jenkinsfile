@@ -1,7 +1,7 @@
 //@Library('test-job-agent-2-libs') _
 
 pipeline {
-  agent any
+  agent label 'master'
   //agent {label "jenkins-agent"}
 
   environment {
