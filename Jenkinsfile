@@ -92,9 +92,11 @@ pipeline {
             }
         }
         steps {
-            sh 'kubectl version'
-            sh 'sed "s|IMAGE_PLACEHOLDER|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" test-pod.yaml > pod.yaml'
-            sh 'kubectl apply -f pod.yaml'
+            sh '''
+                kubectl version
+                sed "s|IMAGE_PLACEHOLDER|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" test-pod.yaml > pod.yaml
+                kubectl apply -f pod.yaml
+            '''
         }
     }
     /*
