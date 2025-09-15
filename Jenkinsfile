@@ -58,6 +58,39 @@ pipeline {
       }
     }
 
+    stage('Deploy to K3S') {
+        agent {
+            kubernetes {
+              yaml '''
+                apiVersion: v1
+                kind: Pod
+                metadata:
+                  labels:
+                    app: hello-world-piggy_experience-service
+                spec:
+                  containers:
+                  - name: maven
+                    image: dqminh2810/hello-world-piggy_experience-service:v51
+                    ports:
+                        - containerPort: 8080
+                    readinessProbe:
+                      httpGet:
+                        path: /actuator/health
+                        port: 8080
+                      initialDelaySeconds: 60
+                    livenessProbe:
+                      httpGet:
+                        path: /actuator/health
+                        port: 8080
+                  imagePullSecrets:
+                    - name: docker-reg-creds
+                '''
+            }
+        }
+        steps {
+            // TO CHECK
+        }
+    }
     /*
     stage('Deploy to Kubernetes') {
       steps {
