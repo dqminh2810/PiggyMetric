@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Pod
 metadata:
   labels:
-      app: hello-world-piggy_experience-service
+      app: hello-world-piggy
   spec:
     initContainers:
       - name: hello-world-piggy_config
