@@ -9,8 +9,9 @@ pipeline {
     GITHUB_REPO = "PiggyMetric"
     GITHUB_CREDENTIAL_ID = "github-api"
     WORKSPACE = "${env.WORKSPACE}"
-    IMAGE_NAME = 'dqminh2810/hello-world-piggy_experience-service'
-    IMAGE_TAG = "v${env.BUILD_NUMBER}"
+    IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
+    IMAGE_NAME_MS_EXPERIENCE = 'dqminh2810/hello-world-piggy_experience-service'
+    IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
     DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
     //KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-creds'
   }
@@ -21,7 +22,8 @@ pipeline {
             sh '''
                 echo "NODE_NAME is $NODE_NAME"
                 echo "JOB_NAME is $JOB_NAME"
-                echo "IMAGE_NAME is $IMAGE_NAME"
+                echo "IMAGE_NAME_MS_CONFIG is IMAGE_NAME_MS_CONFIG"
+                echo "IMAGE_NAME_MS_EXPERIENCE is IMAGE_NAME_MS_EXPERIENCE"
                 echo "IMAGE_TAG is $IMAGE_TAG"
                 echo "USER is $USER"
                 hostname -I
@@ -43,7 +45,8 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         script {
-          dockerImage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}", "${WORKSPACE}/experience-service")
+          dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
+//           dockerImageMsExperience = docker.build("${IMAGE_NAME_MS_EXPERIENCE}:${IMAGE_TAG}", "${WORKSPACE}/experience-service")
         }
       }
     }
@@ -52,7 +55,8 @@ pipeline {
       steps {
         script {
           docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-            dockerImage.push()
+            dockerImageMsConfig.push()
+//             dockerImageMsExperience.push()
           }
         }
       }
@@ -61,34 +65,31 @@ pipeline {
     stage('Deploy to K3S') {
         agent {
             kubernetes {
-              yaml '''
-                apiVersion: v1
-                kind: Pod
-                metadata:
-                  labels:
-                    app: hello-world-piggy_experience-service
-                spec:
-                  containers:
-                  - name: maven
-                    image: dqminh2810/hello-world-piggy_experience-service:v51
-                    ports:
-                        - containerPort: 8080
-                    readinessProbe:
-                      httpGet:
-                        path: /actuator/health
-                        port: 8080
-                      initialDelaySeconds: 60
-                    livenessProbe:
-                      httpGet:
-                        path: /actuator/health
-                        port: 8080
-                  imagePullSecrets:
-                    - name: docker-reg-creds
-                '''
+                label 'k8s-deployer'
+                defaultContainer 'kubectl'
+                yaml """
+                  apiVersion: v1
+                  kind: Pod
+                  spec:
+                    serviceAccountName: jenkins-sa
+                    containers:
+                      - name: kubectl
+                        image: bitnami/kubectl:1.29
+                        command: ['sh','-c','sleep 3600']
+                        tty: true
+                """
             }
         }
         steps {
-            sh 'echo "[K3S-JNLP] Deploy to K3S"'
+            sh """
+                    set -euxo pipefail
+
+                    # Render manifest with the current image
+                    sed "s|IMAGE_PLACEHOLDER|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" test-pod.yaml > pod.yaml
+
+                    # Apply + wait for rollout
+                    kubectl apply -f pod.yaml
+                    """
         }
     }
     /*
