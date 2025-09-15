@@ -35,33 +35,33 @@ pipeline {
             '''
         }
     }
-    stage('Build maven') {
-        steps {
-            sh '''
-                echo "Building maven..."
-                mvn clean package -DskipTests
-            '''
-        }
-    }
-    stage('Build Docker Image') {
-      steps {
-        script {
-          dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
-//           dockerImageMsExperience = docker.build("${IMAGE_NAME_MS_EXPERIENCE}:${IMAGE_TAG}", "${WORKSPACE}/experience-service")
-        }
-      }
-    }
-
-    stage('Push Docker Image') {
-      steps {
-        script {
-          docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-            dockerImageMsConfig.push()
-//             dockerImageMsExperience.push()
-          }
-        }
-      }
-    }
+//     stage('Build maven') {
+//         steps {
+//             sh '''
+//                 echo "Building maven..."
+//                 mvn clean package -DskipTests
+//             '''
+//         }
+//     }
+//     stage('Build Docker Image') {
+//       steps {
+//         script {
+//           dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
+// //           dockerImageMsExperience = docker.build("${IMAGE_NAME_MS_EXPERIENCE}:${IMAGE_TAG}", "${WORKSPACE}/experience-service")
+//         }
+//       }
+//     }
+//
+//     stage('Push Docker Image') {
+//       steps {
+//         script {
+//           docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+//             dockerImageMsConfig.push()
+// //             dockerImageMsExperience.push()
+//           }
+//         }
+//       }
+//     }
 
     stage('Deploy to K3S') {
         agent {
