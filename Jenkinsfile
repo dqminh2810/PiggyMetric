@@ -65,7 +65,6 @@ pipeline {
     stage('Deploy to K3S') {
         agent {
             kubernetes {
-                label "k8s-deploy-${env.BUILD_NUMBER}"
                 defaultContainer 'kubectl'
                 yaml """
                   apiVersion: v1
