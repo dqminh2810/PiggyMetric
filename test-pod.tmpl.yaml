@@ -1,12 +1,14 @@
 apiVersion: v1
 kind: Pod
 metadata:
+  name: hello-world-piggy-ms-__BUILD__
+  namespace: default
   labels:
       app: hello-world-piggy
   spec:
     initContainers:
       - name: hello-world-piggy_config
-        image: IMAGE_PLACEHOLDER
+        image: __IMAGE_PLACEHOLDER__
         ports:
           - containerPort: 8888
         readinessProbe:

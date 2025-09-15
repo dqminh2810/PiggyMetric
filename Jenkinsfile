@@ -11,7 +11,8 @@ pipeline {
     WORKSPACE = "${env.WORKSPACE}"
     IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
     IMAGE_NAME_MS_EXPERIENCE = 'dqminh2810/hello-world-piggy_experience-service'
-    IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
+//     IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
+    IMAGE_TAG = "69-38f1fbe"
     DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
     //KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-creds'
   }
@@ -78,7 +79,7 @@ pipeline {
                         fsGroup: 1000          # give group write on mounted volumes
                     containers:
                       - name: kubectl
-                        image: bitnami/kubectl:1.29
+                        image: bitnami/kubectl:1.33.3
                         command: ['sh','-c','sleep 3600']
                         tty: true
                         workingDir: /home/jenkins/agent
@@ -96,8 +97,9 @@ pipeline {
                 pwd
                 kubectl version
                 ls -al
-                sed -i'' "s|IMAGE_PLACEHOLDER|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" test-pod.yaml
-                cp test-pod.yaml pod.yaml
+                sed -e "s|__BUILD__|${BUILD_NUMBER}|g" \
+                        -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
+                        test-pod.tmpl.yaml > pod.yaml
                 ls -al
                 kubectl apply -f pod.yaml
             '''
