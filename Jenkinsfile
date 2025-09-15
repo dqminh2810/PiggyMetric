@@ -93,16 +93,8 @@ pipeline {
         }
         steps {
             sh 'kubectl version'
-            sh 'kubectl get ns'
-        //                 sh """
-        //                     set -euxo pipefail
-        //
-        //                     # Render manifest with the current image
-        //                     sed "s|IMAGE_PLACEHOLDER|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" test-pod.yaml > pod.yaml
-        //
-        //                     # Apply + wait for rollout
-        //                     kubectl apply -f pod.yaml
-        //                 """
+            sh 'sed "s|IMAGE_PLACEHOLDER|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" test-pod.yaml > pod.yaml'
+            sh 'kubectl apply -f pod.yaml'
         }
     }
     /*
