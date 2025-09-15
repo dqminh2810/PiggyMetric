@@ -6,8 +6,8 @@ metadata:
   labels:
       app: hello-world-piggy
 spec:
-  initContainers:
-    - name: hello-world-piggy_config
+  containers:
+    - name: hello-world-piggy-config
       image: __IMAGE_PLACEHOLDER__
       ports:
         - containerPort: 8888
