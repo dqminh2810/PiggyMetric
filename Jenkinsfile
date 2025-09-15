@@ -95,7 +95,10 @@ pipeline {
             sh '''
                 pwd
                 kubectl version
-                sed "s|IMAGE_PLACEHOLDER|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" test-pod.yaml > pod.yaml
+                ls -al
+                sed -i'' "s|IMAGE_PLACEHOLDER|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" test-pod.yaml
+                cp test-pod.yaml pod.yaml
+                ls -al
                 kubectl apply -f pod.yaml
             '''
         }
