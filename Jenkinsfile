@@ -65,7 +65,7 @@ pipeline {
     stage('Deploy to K3S') {
         agent {
             kubernetes {
-                label 'k8s-deployer'
+                label "k8s-deploy-${env.BUILD_NUMBER}"
                 defaultContainer 'kubectl'
                 yaml """
                   apiVersion: v1
@@ -81,8 +81,8 @@ pipeline {
             }
         }
         steps {
-                            sh 'kubectl version'
-                            sh 'kubectl get ns'
+            sh 'kubectl version'
+            sh 'kubectl get ns'
         //                 sh """
         //                     set -euxo pipefail
         //
@@ -92,7 +92,7 @@ pipeline {
         //                     # Apply + wait for rollout
         //                     kubectl apply -f pod.yaml
         //                 """
-                    }
+        }
     }
     /*
     stage('Deploy to Kubernetes') {
