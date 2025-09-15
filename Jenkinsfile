@@ -87,9 +87,6 @@ pipeline {
                 '''
             }
         }
-        steps {
-            // TO CHECK
-        }
     }
     /*
     stage('Deploy to Kubernetes') {
