@@ -87,6 +87,9 @@ pipeline {
                 '''
             }
         }
+        steps {
+            sh 'echo "[K3S-JNLP] Deploy to K3S"'
+        }
     }
     /*
     stage('Deploy to Kubernetes') {
