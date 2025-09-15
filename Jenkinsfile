@@ -72,11 +72,23 @@ pipeline {
                   kind: Pod
                   spec:
                     serviceAccountName: jenkins-sa
+                    securityContext:
+                        runAsNonRoot: true
+                        runAsUser: 1000        # match the jnlp user
+                        runAsGroup: 1000
+                        fsGroup: 1000          # give group write on mounted volumes
                     containers:
                       - name: kubectl
                         image: bitnami/kubectl:1.29
                         command: ['sh','-c','sleep 3600']
                         tty: true
+                        workingDir: /home/jenkins/agent
+                        volumeMounts:
+                        - mountPath: /home/jenkins/agent
+                          name: workspace-volume
+                    volumes:
+                      - name: workspace-volume
+                        emptyDir: {}
                 """
             }
         }
