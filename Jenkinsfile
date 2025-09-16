@@ -36,31 +36,32 @@ pipeline {
                 '''
             }
         }
-//         stage('Build maven') {
-//             steps {
-//                 sh '''
-//                     echo "Building maven..."
-//                     mvn clean package -DskipTests
-//                 '''
-//             }
-//         }
-//         stage('Build Docker Image') {
-//           steps {
-//             script {
-//               dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
-//             }
-//           }
-//         }
-//
-//         stage('Push Docker Image') {
-//           steps {
-//             script {
-//               docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-//                 dockerImageMsConfig.push()
-//               }
-//             }
-//           }
-//         }
+
+        stage('Build maven') {
+            steps {
+                sh '''
+                    echo "Building maven..."
+                    mvn clean package -DskipTests
+                '''
+            }
+        }
+        stage('Build Docker Image') {
+          steps {
+            script {
+              dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
+            }
+          }
+        }
+
+        stage('Push Docker Image') {
+          steps {
+            script {
+              docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                dockerImageMsConfig.push()
+              }
+            }
+          }
+        }
 
         stage('K3S Deploy and Test') {
             agent {
