@@ -73,33 +73,39 @@ pipeline {
             stages {
                 stage('Deploy to K3S') {
                     steps {
-                        container('kubectl') {
-                            sh '''
-                                sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
-                                ms-pod.tmpl.yaml > ms-pod.yaml
-                                kubectl apply -f ms-pod.yaml
-                            '''
+                        withKubeConfig(credentialsId: 'jenkins-sa-token') {
+                            container('kubectl') {
+                                sh '''
+                                    sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
+                                    ms-pod.tmpl.yaml > ms-pod.yaml
+                                    kubectl apply -f ms-pod.yaml
+                                '''
+                            }
                         }
                     }
                 }
 
                 stage('Wait and Check Test Result') {
                     steps {
-                        container('kubectl') {
-                            sh '''
-                                kubectl wait --for=condition=Ready pod/hello-world-piggy-ms-pod --timeout=300s || exit 1
-                                kubectl logs pod/hello-world-piggy-ms-pod
-                            '''
+                        withKubeConfig(credentialsId: 'jenkins-sa-token') {
+                            container('kubectl') {
+                                sh '''
+                                    kubectl wait --for=condition=Ready pod/hello-world-piggy-ms-pod --timeout=300s || exit 1
+                                    kubectl logs pod/hello-world-piggy-ms-pod
+                                '''
+                            }
                         }
                     }
                 }
 
                 stage('Clean up') {
                     steps {
-                        container('kubectl') {
-                            sh '''
-                                kubectl delete pod hello-world-piggy-ms-pod --ignore-not-found=true
-                            '''
+                        withKubeConfig(credentialsId: 'jenkins-sa-token') {
+                            container('kubectl') {
+                                sh '''
+                                    kubectl delete pod hello-world-piggy-ms-pod --ignore-not-found=true
+                                '''
+                            }
                         }
                     }
                 }
