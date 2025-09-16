@@ -10,7 +10,8 @@ pipeline {
         GITHUB_CREDENTIAL_ID = "github-api"
         WORKSPACE = "${env.WORKSPACE}"
         IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
-        IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
+//         IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
+        IMAGE_TAG = "81-a3e90ca"
         DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
         //KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-creds'
     }
@@ -35,31 +36,31 @@ pipeline {
                 '''
             }
         }
-        stage('Build maven') {
-            steps {
-                sh '''
-                    echo "Building maven..."
-                    mvn clean package -DskipTests
-                '''
-            }
-        }
-        stage('Build Docker Image') {
-          steps {
-            script {
-              dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
-            }
-          }
-        }
-
-        stage('Push Docker Image') {
-          steps {
-            script {
-              docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                dockerImageMsConfig.push()
-              }
-            }
-          }
-        }
+//         stage('Build maven') {
+//             steps {
+//                 sh '''
+//                     echo "Building maven..."
+//                     mvn clean package -DskipTests
+//                 '''
+//             }
+//         }
+//         stage('Build Docker Image') {
+//           steps {
+//             script {
+//               dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
+//             }
+//           }
+//         }
+//
+//         stage('Push Docker Image') {
+//           steps {
+//             script {
+//               docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+//                 dockerImageMsConfig.push()
+//               }
+//             }
+//           }
+//         }
 
         stage('K3S Deploy and Test') {
             agent {
