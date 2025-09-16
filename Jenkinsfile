@@ -63,7 +63,7 @@ pipeline {
 //           }
 //         }
 
-        stage('Deploy to K3S') {
+        stage('K3S Deploy and Test') {
             agent {
                 kubernetes {
                     cloud 'K3S'
@@ -72,52 +72,37 @@ pipeline {
                     yamlFile 'kubectlPod.yaml'
                 }
             }
-            steps {
-                sh '''
-                    sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
-                            test-pod.tmpl.yaml > pod.yaml
-                    kubectl apply -f pod.yaml
-                '''
-            }
-        }
-        /*
-        stage('Deploy to Kubernetes') {
-          steps {
-            withCredentials([file(credentialsId: KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG')]) {
-              script {
-                sh '''
-                  export KUBECONFIG=$KUBECONFIG
-
-                  # Replace image tag dynamically and apply manifest
-                  sed "s|your-dockerhub-username/my-custom-app:latest|${IMAGE_NAME}:${IMAGE_TAG}|" k8s/test-pod.yaml > k8s/test-pod-rendered.yaml
-
-                  kubectl apply -f k8s/test-pod-rendered.yaml
-                '''
-              }
-            }
-          }
-        }
-        */
-        stage('Wait and Check Test Result') {
-            agent {
-                label "k3s-agent"
-            }
-            steps {
-                sh '''
-                  kubectl wait --for=condition=Ready pod/hello-world-piggy-ms-pod --timeout=300s || exit 1
-                  kubectl logs hello-world-piggy-ms-pod
-                '''
-            }
-        }
-
-        stage('Clean Up') {
-            agent {
-                label "k3s-agent"
-            }
-            steps {
-                sh '''
-                  kubectl delete pod hello-world-piggy-ms-pod --ignore-not-found=true
-                '''
+            stages {
+                stage('Deploy to K3S') {
+                    steps {
+                        container('kubectl') {
+                            sh '''
+                                sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
+                                test-pod.tmpl.yaml > pod.yaml
+                                kubectl apply -f pod.yaml
+                            '''
+                        }
+                    }
+                }
+                stage('Wait and Check Test Result') {
+                    steps {
+                        container('kubectl') {
+                            sh '''
+                                kubectl wait --for=condition=Ready pod/hello-world-piggy-ms-pod --timeout=300s || exit 1
+                                kubectl logs hello-world-piggy-ms-pod
+                            '''
+                        }
+                    }
+                }
+                stage('Clean up') {
+                    steps {
+                        container('kubectl') {
+                            sh '''
+                                kubectl delete pod hello-world-piggy-ms-pod --ignore-not-found=true
+                            '''
+                        }
+                    }
+                }
             }
         }
     }
