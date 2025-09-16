@@ -22,4 +22,4 @@ spec:
           port: 8888
         initialDelaySeconds: 120
   imagePullSecrets:
-    - name: docker-reg-creds
+    - name: docker-reg-creds  #credentials to pull images from docker registry

@@ -10,9 +10,7 @@ pipeline {
         GITHUB_CREDENTIAL_ID = "github-api"
         WORKSPACE = "${env.WORKSPACE}"
         IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
-        IMAGE_NAME_MS_EXPERIENCE = 'dqminh2810/hello-world-piggy_experience-service'
-    //     IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
-        IMAGE_TAG = "69-38f1fbe"
+        IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
         DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
         //KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-creds'
     }
@@ -21,47 +19,47 @@ pipeline {
         stage('Check ENV') {
             steps {
                 sh '''
+                    echo "-------ENV VARIABLES-------"
                     echo "NODE_NAME is $NODE_NAME"
                     echo "JOB_NAME is $JOB_NAME"
                     echo "IMAGE_NAME_MS_CONFIG is IMAGE_NAME_MS_CONFIG"
                     echo "IMAGE_NAME_MS_EXPERIENCE is IMAGE_NAME_MS_EXPERIENCE"
                     echo "IMAGE_TAG is $IMAGE_TAG"
                     echo "USER is $USER"
+                    echo "WORKSPACE is ${WORKSPACE}"
+                    echo "-------BUILD TOOLS-------"
                     hostname -I
                     java --version
                     mvn --version
                     docker info
-                    echo "${WORKSPACE}"
                 '''
             }
         }
-//         stage('Build maven') {
-//             steps {
-//                 sh '''
-//                     echo "Building maven..."
-//                     mvn clean package -DskipTests
-//                 '''
-//             }
-//         }
-//         stage('Build Docker Image') {
-//           steps {
-//             script {
-//               dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
-//     //           dockerImageMsExperience = docker.build("${IMAGE_NAME_MS_EXPERIENCE}:${IMAGE_TAG}", "${WORKSPACE}/experience-service")
-//             }
-//           }
-//         }
-//
-//         stage('Push Docker Image') {
-//           steps {
-//             script {
-//               docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-//                 dockerImageMsConfig.push()
-//     //             dockerImageMsExperience.push()
-//               }
-//             }
-//           }
-//         }
+        stage('Build maven') {
+            steps {
+                sh '''
+                    echo "Building maven..."
+                    mvn clean package -DskipTests
+                '''
+            }
+        }
+        stage('Build Docker Image') {
+          steps {
+            script {
+              dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
+            }
+          }
+        }
+
+        stage('Push Docker Image') {
+          steps {
+            script {
+              docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                dockerImageMsConfig.push()
+              }
+            }
+          }
+        }
 
         stage('K3S Deploy and Test') {
             agent {
@@ -69,7 +67,7 @@ pipeline {
                     cloud 'K3S'
                     label 'k3s-agent'
                     defaultContainer 'kubectl'
-                    yamlFile 'kubectlPod.yaml'
+                    yamlFile 'kubectl-pod.yaml'
                 }
             }
             stages {
@@ -78,12 +76,13 @@ pipeline {
                         container('kubectl') {
                             sh '''
                                 sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
-                                test-pod.tmpl.yaml > pod.yaml
-                                kubectl apply -f pod.yaml
+                                ms-pod.tmpl.yaml > ms-pod.yaml
+                                kubectl apply -f ms-pod.yaml
                             '''
                         }
                     }
                 }
+
                 stage('Wait and Check Test Result') {
                     steps {
                         container('kubectl') {
@@ -94,6 +93,7 @@ pipeline {
                         }
                     }
                 }
+
                 stage('Clean up') {
                     steps {
                         container('kubectl') {
