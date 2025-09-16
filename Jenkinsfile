@@ -108,7 +108,6 @@ pipeline {
               kubectl logs hello-world-piggy-ms-pod
             '''
         }
-      }
     }
 
     stage('Clean Up') {
