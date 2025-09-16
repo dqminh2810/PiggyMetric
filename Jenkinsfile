@@ -66,41 +66,16 @@ pipeline {
     stage('Deploy to K3S') {
         agent {
             kubernetes {
+                cloud 'K3S'
+                label 'k3s-agent'
                 defaultContainer 'kubectl'
-                yaml """
-                  apiVersion: v1
-                  kind: Pod
-                  spec:
-                    serviceAccountName: jenkins-sa
-                    securityContext:
-                        runAsNonRoot: true
-                        runAsUser: 1000        # match the jnlp user
-                        runAsGroup: 1000
-                        fsGroup: 1000          # give group write on mounted volumes
-                    containers:
-                      - name: kubectl
-                        image: bitnami/kubectl:1.33.3
-                        command: ['sh','-c','sleep 3600']
-                        tty: true
-                        workingDir: /home/jenkins/agent
-                        volumeMounts:
-                        - mountPath: /home/jenkins/agent
-                          name: workspace-volume
-                    volumes:
-                      - name: workspace-volume
-                        emptyDir: {}
-                """
+                yamlFile 'kubectlPod.yaml'
             }
         }
         steps {
             sh '''
-                pwd
-                kubectl version
-                ls -al
-                sed -e "s|__BUILD__|${BUILD_NUMBER}|g" \
-                        -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
+                sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
                         test-pod.tmpl.yaml > pod.yaml
-                ls -al
                 kubectl apply -f pod.yaml
             '''
         }
@@ -122,34 +97,29 @@ pipeline {
         }
       }
     }
-
+    */
     stage('Wait and Check Test Result') {
-      steps {
-        withCredentials([file(credentialsId: KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG')]) {
-          script {
+        agent {
+            label "k3s-agent"
+        }
+        steps {
             sh '''
-              export KUBECONFIG=$KUBECONFIG
-              kubectl wait --for=condition=Ready pod/test-pod --timeout=60s || exit 1
-              kubectl logs test-pod
+              kubectl wait --for=condition=Ready pod/hello-world-piggy-ms-pod --timeout=300s || exit 1
+              kubectl logs hello-world-piggy-ms-pod
             '''
-          }
         }
       }
     }
 
     stage('Clean Up') {
-      steps {
-        withCredentials([file(credentialsId: KUBECONFIG_CREDENTIALS_ID, variable: 'KUBECONFIG')]) {
-          script {
-            sh '''
-              export KUBECONFIG=$KUBECONFIG
-              kubectl delete pod test-pod --ignore-not-found=true
-            '''
-          }
+        agent {
+            label "k3s-agent"
         }
-      }
+        steps {
+            sh '''
+              kubectl delete pod hello-world-piggy-ms-pod --ignore-not-found=true
+            '''
+        }
     }
-
-    */
   }
 }
