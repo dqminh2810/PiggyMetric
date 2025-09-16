@@ -66,7 +66,6 @@ pipeline {
             agent {
                 kubernetes {
                     cloud 'K3S'
-                    label 'k3s-agent'
                     defaultContainer 'kubectl'
                     yamlFile 'kubectl-pod.yaml'
                 }
