@@ -89,7 +89,7 @@ pipeline {
                         container('kubectl') {
                             sh '''
                                 kubectl wait --for=condition=Ready pod/hello-world-piggy-ms-pod --timeout=300s || exit 1
-                                kubectl logs hello-world-piggy-ms-pod
+                                kubectl logs pod/hello-world-piggy-ms-pod
                             '''
                         }
                     }
