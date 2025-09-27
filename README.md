@@ -8,8 +8,6 @@ mvn clean package -DskipTests
 ## Build & Run Docker containers
 - Micro services & databases
 `docker-compose --profile db --profile ms up`
-- Grafana & Prometheus
-`docker-compose -f docker-compose-metric up`
 
 ## Hostname resolver
 Docker containers communicate by Docker network and use their hostname in docker-compose to resolve their own container address.
@@ -27,3 +25,4 @@ In order to access to docker containers by their own name from host we need to c
 ### OAuthFlow architecture
 
 ![OAuthFlow_architecture](https://github.com/dqminh2810/PiggyMetric/blob/main/docs/PM-OauthAppFlow.jpg)
+
