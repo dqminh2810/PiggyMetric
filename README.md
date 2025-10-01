@@ -6,10 +6,19 @@ Microservices for finance by Spring Boot 3
 mvn clean package -DskipTests 
 
 ## Build & Run Docker containers
-- Micro services & databases
-`docker-compose --profile db --profile ms up`
-- Grafana & Prometheus
-`docker-compose -f docker-compose-metric up`
+- Micro services
+
+`docker-compose --profile ms up`
+
+- Databases
+
+`Fill your .env MongoDB/AWS (if backup with S3) params`
+
+`docker-compose --env-file .env --profile db up`
+
+`docker exec <mongodb-container-id> /bin/bash -c "/mongo-backup-s3.sh"`
+
+`docker exec <mongodb-container-id> /bin/bash -c "00 03 * * 0 /bin/bash /mongo-backup-s3.sh"` 
 
 ## Hostname resolver
 Docker containers communicate by Docker network and use their hostname in docker-compose to resolve their own container address.
@@ -22,7 +31,7 @@ In order to access to docker containers by their own name from host we need to c
 
 ### Components architecture
 
-![Components_architecture](https://github.com/dqminh2810/PiggyMetric/blob/main/docs/PM-Components-Architecture.jpg)
+![Components_architecture](https://github.com/dqminh2810/PiggyMetric/blob/main/docs/PM-Components-Architecture.png)
 
 ### OAuthFlow architecture
 

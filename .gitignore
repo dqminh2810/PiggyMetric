@@ -32,9 +32,15 @@ bin/
 
 ### .env ###
 **/.env
+.env.local
 
 ### grafana ###
 grafana/data/plugins/**
 grafana/data/csv/
 grafana/data/pdf/
 grafana/data/png/
+
+### mongodb ###
+mongodb/accountdb/**
+mongodb/notificationdb/**
+mongodb/statisticdb/**

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+URI=mongodb://$MONGO_INITDB_ROOT_USERNAME:$MONGO_INITDB_ROOT_PASSWORD@localhost:27017/$MONGO_INITDB_DATABASE
+BACKUP_DUMP_PATH=/data/db/ #Replace your backup dump path
+tar -xf $BACKUP_DUMP_PATH
+mongorestore --uri=$URI $BACKUP_DUMP_PATH

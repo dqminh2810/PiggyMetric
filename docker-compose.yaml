@@ -165,11 +165,16 @@ services:
     restart: unless-stopped
     ports:
       - 25000:27017
+    volumes:
+      - ./mongodb/accountdb:/data/db
     environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE_MS_ACCOUNT-account}
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
-      - INIT_DUMP=${INIT_DUMP_OAUTH2-account-service-dump.js}
+      - INIT_DUMP=${INIT_DUMP_MS_ACCOUNT-account-service-dump.js}
+      - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME-default}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID-default}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY-default}
   notification-mongodb:
     profiles: ["db"]
     build:
@@ -180,10 +185,15 @@ services:
     restart: unless-stopped
     ports:
       - 26000:27017
+    volumes:
+      - ./mongodb/notificationdb:/data/db
     environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE_MS_NOTIFICATION-notification}
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
+      - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME-default}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID-default}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY-default}
   statistic-mongodb:
     profiles: ["db"]
     build:
@@ -194,7 +204,15 @@ services:
     restart: unless-stopped
     ports:
       - 27000:27017
+    volumes:
+      - ./mongodb/statisticdb:/data/db
     environment:
-      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE-piggymetrics}
+      - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE_MS_STATISTIC-statistic}
       - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME-user}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD-password}
+      - AWS_S3_BUCKET_NAME=${AWS_S3_BUCKET_NAME-default}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID-default}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY-default}
+
+volumes:
+  mongodb:
