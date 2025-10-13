@@ -77,7 +77,7 @@ pipeline {
                             sh '''
                                 sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
                                 k8s/ms-pod.tmpl.yaml > k8s/ms-pod.yaml
-                                kubectl --namespace jenkins-ns apply -f ms-pod.yaml
+                                kubectl --namespace jenkins-ns apply -f k8s/ms-pod.yaml
                             '''
                         }
                     }
@@ -145,7 +145,7 @@ pipeline {
                             sh '''
                                 sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
                                 k8s/ms-pod.tmpl.yaml > k8s/ms-pod.yaml
-                                kubectl --namespace jenkins-ns apply -f ms-pod.yaml
+                                kubectl --namespace jenkins-ns apply -f k8s/ms-pod.yaml
                             '''
                         }
                     }
