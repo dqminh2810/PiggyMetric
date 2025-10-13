@@ -64,16 +64,14 @@ pipeline {
 
         stage('Manual Approval to Deploy') {
             steps {
-                script {
-                    timeout(time: 5, unit: 'MINUTES') { // Optional: Add a timeout for the approval
-                        input {
-                            message 'Proceed with deployment ?'
-                            ok 'Deploy' // Text for the "proceed" button
-                            timeout 600 // Optional: timeout in seconds
-                        }
-                         echo 'Approval received. Deploying to K3S...'
-                    }
+                input {
+                    message 'Proceed with deployment ?'
+                    ok 'Deploy' // Text for the "proceed" button
+//                     submitter 'admin' // Optional: specify who can approve
+                    timeout 600 // Optional: timeout in seconds
                 }
+                echo 'Approval received. Deploying to k3s...'
+                // ... deployment steps ...
             }
         }
 
