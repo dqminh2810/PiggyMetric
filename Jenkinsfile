@@ -105,5 +105,52 @@ pipeline {
                 }
             }
         }
+
+         stage('Publish') {
+            when {
+                branch 'main' // This stage will only run for the 'master' branch
+            }
+
+            agent {
+                kubernetes {
+                    cloud 'K3S'
+                        defaultContainer 'kubectl'
+                        yamlFile 'k8s/kubectl-pod.yaml'
+                }
+            }
+
+            stages {
+                stage('Publish to K3S') {
+                    steps {
+                        script {
+                            if(env.BRANCH_NAME=='main') {
+                                def isContinue=input(
+                                        message: "Continue deploy to Production Environment?",
+                                        parameters: [
+                                            [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Checked means you acknowledge and approve with this deployment']
+                                        ])
+                                echo "isContinue=${isContinue}"
+                                if(isContinue) {
+                                    echo "deploy continue"
+                                } else {
+                                    currentBuild.result = 'FAILURE'
+                                    echo "User untick and not agree on it."
+                                }
+                            } else {
+                                echo "no need to approve"
+                            }
+                        }
+
+                        container('kubectl') {
+                            sh '''
+                                sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
+                                k8s/ms-pod.tmpl.yaml > k8s/ms-pod.yaml
+                                kubectl --namespace jenkins-ns apply -f ms-pod.yaml
+                            '''
+                        }
+                    }
+                }
+            }
+         }
     }
 }
