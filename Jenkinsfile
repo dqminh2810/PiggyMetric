@@ -65,7 +65,7 @@ pipeline {
         stage('K3S Deploy and Test') {
             agent {
                 kubernetes {
-                    cloud 'K3S'
+                    cloud 'k3s'
                     defaultContainer 'kubectl'
                     yamlFile 'k8s/kubectl-pod.yaml'
                 }
@@ -113,7 +113,7 @@ pipeline {
 
             agent {
                 kubernetes {
-                    cloud 'K3S'
+                    cloud 'k3s'
                         defaultContainer 'kubectl'
                         yamlFile 'k8s/kubectl-pod.yaml'
                 }
