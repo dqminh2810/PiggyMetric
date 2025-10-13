@@ -2,7 +2,7 @@
 
 pipeline {
     //agent { label 'built-in' }
-    agent {label "jenkins-agent"}
+    agent {label "agent"}
 
     environment {
         GITHUB_ORGANIZATION = "dqminh2810"
