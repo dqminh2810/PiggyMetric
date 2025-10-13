@@ -66,15 +66,12 @@ pipeline {
             steps {
                 script {
                     timeout(time: 5, unit: 'MINUTES') { // Optional: Add a timeout for the approval
-                        userInput = input(
-                            message: 'Do you approve this deployment?',
-                            ok: 'Proceed with Deployment',
-                            parameters: [
-                                string(name: 'reason', defaultValue: 'No specific reason', description: 'Reason for approval/rejection')
-                            ]
-                        )
-                        // You can use the userInput variable if you defined parameters
-                        echo "Approval received with reason: ${userInput.reason}"
+                        input {
+                            message 'Proceed with deployment ?'
+                            ok 'Deploy' // Text for the "proceed" button
+                            timeout 600 // Optional: timeout in seconds
+                        }
+                         echo 'Approval received. Deploying to K3S...'
                     }
                 }
             }
