@@ -66,7 +66,7 @@ pipeline {
             steps {
                 script {
                     timeout(time: 5, unit: 'MINUTES') { // Optional: Add a timeout for the approval
-                        def userInput = input(
+                        userInput = input(
                             message: 'Do you approve this deployment?',
                             ok: 'Proceed with Deployment',
                             parameters: [
