@@ -62,7 +62,25 @@ pipeline {
           }
         }
 
-        stage('K3S Deploy and Test') {
+        stage('Manual Approval to Deploy') {
+            steps {
+                script {
+                    timeout(time: 5, unit: 'MINUTES') { // Optional: Add a timeout for the approval
+                        def userInput = input(
+                            message: 'Do you approve this deployment?',
+                            ok: 'Proceed with Deployment',
+                            parameters: [
+                                string(name: 'reason', defaultValue: 'No specific reason', description: 'Reason for approval/rejection')
+                            ]
+                        )
+                        // You can use the userInput variable if you defined parameters
+                        echo "Approval received with reason: ${userInput.reason}"
+                    }
+                }
+            }
+        }
+
+        stage('K3S Deployment') {
             agent {
                 kubernetes {
                     cloud 'k3s'
@@ -94,63 +112,16 @@ pipeline {
                     }
                 }
 
-                stage('Clean up') {
-                    steps {
-                        container('kubectl') {
-                            sh '''
-                                kubectl --namespace jenkins-ns delete pod hello-world-piggy-ms-pod --ignore-not-found=true
-                            '''
-                        }
-                    }
-                }
+//                 stage('Clean up') {
+//                     steps {
+//                         container('kubectl') {
+//                             sh '''
+//                                 kubectl --namespace jenkins-ns delete pod hello-world-piggy-ms-pod --ignore-not-found=true
+//                             '''
+//                         }
+//                     }
+//                 }
             }
         }
-
-         stage('Publish') {
-            when {
-                branch 'main' // This stage will only run for the 'master' branch
-            }
-
-            agent {
-                kubernetes {
-                    cloud 'k3s'
-                        defaultContainer 'kubectl'
-                        yamlFile 'k8s/kubectl-pod.yaml'
-                }
-            }
-
-            stages {
-                stage('Publish to K3S') {
-                    steps {
-                        script {
-                            if(env.BRANCH_NAME=='main') {
-                                def isContinue=input(
-                                        message: "Continue deploy to Production Environment?",
-                                        parameters: [
-                                            [$class: 'BooleanParameterDefinition', defaultValue: true, description: '', name: 'Checked means you acknowledge and approve with this deployment']
-                                        ])
-                                echo "isContinue=${isContinue}"
-                                if(isContinue) {
-                                    echo "deploy continue"
-                                } else {
-                                    currentBuild.result = 'FAILURE'
-                                    echo "User untick and not agree on it."
-                                }
-                            } else {
-                                echo "no need to approve"
-                            }
-                        }
-
-                        container('kubectl') {
-                            sh '''
-                                sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
-                                k8s/ms-pod.tmpl.yaml > k8s/ms-pod.yaml
-                                kubectl --namespace jenkins-ns apply -f k8s/ms-pod.yaml
-                            '''
-                        }
-                    }
-                }
-            }
-         }
     }
 }
