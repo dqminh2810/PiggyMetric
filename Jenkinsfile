@@ -47,7 +47,7 @@ pipeline {
         stage('Build Docker Image') {
           steps {
             script {
-              dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
+              def dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
             }
           }
         }
