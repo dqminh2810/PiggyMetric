@@ -26,7 +26,7 @@ pipeline {
                     echo "IMAGE_TAG is $IMAGE_TAG"
                     echo "USER is $USER"
                     echo "WORKSPACE is ${WORKSPACE}"
-                    echo "BRANCH_NAME is ${env.BRANCH_NAME}"
+                    echo "BRANCH_NAME is ${BRANCH_NAME}"
                     echo "-------BUILD TOOLS-------"
                     hostname -I
                     java --version
