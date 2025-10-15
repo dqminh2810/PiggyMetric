@@ -41,7 +41,6 @@ pipeline {
         stage('Unit Test & Build maven') {
             steps {
                 sh '''
-                    echo "Branch name is ${env.BRANCH_NAME}"
                     echo "Unit Test & Build maven project..."
                     mvn clean package
                 '''
