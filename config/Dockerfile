@@ -1,6 +1,6 @@
-# FROM openjdk:17-alpine
-FROM --platform=linux/arm64 eclipse-temurin:17-jdk
-RUN apk add --no-cache curl
+FROM openjdk:17-alpine
+# FROM amazoncorretto:17-alpine
+RUN apk add --no-cache ca-certificates curl
 WORKDIR /app
 COPY target/*.jar app.jar
 EXPOSE 8888
