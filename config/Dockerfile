@@ -1,5 +1,5 @@
 # FROM openjdk:17-alpine
-FROM --platform=linux/arm64 openjdk:17-alpine-slim
+FROM --platform=linux/arm64 openjdk:17-alpine
 RUN apk add --no-cache curl
 WORKDIR /app
 COPY target/*.jar app.jar
