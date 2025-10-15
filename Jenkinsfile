@@ -26,6 +26,7 @@ pipeline {
                     echo "IMAGE_TAG is $IMAGE_TAG"
                     echo "USER is $USER"
                     echo "WORKSPACE is ${WORKSPACE}"
+                    echo "BRANCH_NAME is ${env.BRANCH_NAME}"
                     echo "-------BUILD TOOLS-------"
                     hostname -I
                     java --version
@@ -97,7 +98,7 @@ pipeline {
 
                 stage('Manual Approval to Deploy on Production') {
                     when {
-                        branch 'origin/main'
+                        branch 'main'
                     }
 
                     steps {
