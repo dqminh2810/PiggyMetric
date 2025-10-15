@@ -100,17 +100,23 @@ pipeline {
                 }
 
                 stage('Manual Approval to Deploy on Production') {
-                    when {
-                        branch 'main'
-                    }
-
                     steps {
-                        input 'Do you approve deployment?'
-                        echo 'Approval received. Deploying to k3s...'
-                        container('kubectl') {
-                            sh '''
-                                kubectl --namespace jenkins-ns apply -f k8s/ms-pod-prod.yaml
-                            '''
+                        script{
+                            if (env.GIT_BRANCH == 'origin/main') {
+                                input(
+                                    id: 'deploy-confirm',
+                                    message: "Deploy main branch to production?",
+                                    ok: 'Yes, deploy'
+                                )
+                                echo 'Approval received. Deploying to k3s...'
+                                container('kubectl') {
+                                    sh '''
+                                        kubectl --namespace jenkins-ns apply -f k8s/ms-pod-prod.yaml
+                                    '''
+                                }
+                            } else {
+                                echo "Not the main branch. Skipping production deployment prompt."
+                            }
                         }
                     }
                 }
