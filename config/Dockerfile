@@ -1,5 +1,4 @@
 FROM openjdk:17-alpine
-# FROM amazoncorretto:17-alpine
 RUN apk add --no-cache ca-certificates curl
 WORKDIR /app
 COPY target/*.jar app.jar
