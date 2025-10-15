@@ -7,6 +7,7 @@ pipeline {
         GITHUB_ORGANIZATION = "dqminh2810"
         GITHUB_REPO = "PiggyMetric"
         GITHUB_CREDENTIAL_ID = "github-api"
+        GITHUB_BRANCH_NAME = "${env.GIT_BRANCH}"
         WORKSPACE = "${env.WORKSPACE}"
         IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
 //         IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
@@ -18,7 +19,6 @@ pipeline {
         stage('Check ENV') {
             steps {
                 sh '''
-                    checkout scm
                     echo "-------ENV VARIABLES-------"
                     echo "NODE_NAME is $NODE_NAME"
                     echo "JOB_NAME is $JOB_NAME"
@@ -27,8 +27,9 @@ pipeline {
                     echo "IMAGE_TAG is $IMAGE_TAG"
                     echo "USER is $USER"
                     echo "WORKSPACE is ${WORKSPACE}"
-                    echo "BRANCH_NAME is ${BRANCH_NAME}"
+                    echo "BRANCH_NAME is ${GITHUB_BRANCH_NAME}"
                     echo "-------BUILD TOOLS-------"
+                    git rev-parse --abbrev-ref HEAD
                     hostname -I
                     java --version
                     mvn --version
