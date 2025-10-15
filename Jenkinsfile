@@ -97,7 +97,7 @@ pipeline {
 
                 stage('Manual Approval to Deploy on Production') {
                     when {
-                        branch 'main'
+                        branch 'origin/main'
                     }
 
                     steps {
