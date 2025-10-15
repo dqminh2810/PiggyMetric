@@ -10,7 +10,7 @@ pipeline {
         WORKSPACE = "${env.WORKSPACE}"
         IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
 //         IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
-        IMAGE_TAG = "22-51b7245"
+        IMAGE_TAG = "arm64"
         DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
     }
 
@@ -44,23 +44,23 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                    dockerImageMsConfig.push()
-                    }
-                }
-            }
-        }
+//         stage('Build Docker Image') {
+//             steps {
+//                 script {
+//                     dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
+//                 }
+//             }
+//         }
+//
+//         stage('Push Docker Image') {
+//             steps {
+//                 script {
+//                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+//                     dockerImageMsConfig.push()
+//                     }
+//                 }
+//             }
+//         }
 
         stage('Prepare ENV for K3S deployment') {
             agent {
