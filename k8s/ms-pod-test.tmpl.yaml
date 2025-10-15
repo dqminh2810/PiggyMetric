@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: hello-world-piggy-ms-pod
+  name: hello-world-piggy-ms-pod-test
   namespace: jenkins-ns
   labels:
       app: hello-world-piggy
