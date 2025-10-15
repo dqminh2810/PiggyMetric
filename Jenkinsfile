@@ -1,7 +1,6 @@
 //@Library('test-job-agent-2-libs') _
 
 pipeline {
-    //agent { label 'built-in' }
     agent {label "agent"}
 
     environment {
@@ -12,7 +11,6 @@ pipeline {
         IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
         IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
         DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
-        //KUBECONFIG_CREDENTIALS_ID = 'kubeconfig-creds'
     }
 
     stages {
@@ -39,78 +37,99 @@ pipeline {
         stage('Build maven') {
             steps {
                 sh '''
-                    echo "Building maven..."
+                    echo "Building maven project..."
                     mvn clean package -DskipTests
                 '''
             }
         }
-        stage('Build Docker Image') {
-          steps {
-            script {
-              dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
+
+        stage('Unit test') {
+            steps {
+                sh '''
+                    echo "Testing maven project..."
+                    mvn test -p
+                '''
             }
-          }
+        }
+
+        stage('Build Docker Image') {
+            steps {
+                script {
+                    dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
+                }
+            }
         }
 
         stage('Push Docker Image') {
-          steps {
-            script {
-              docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
-                dockerImageMsConfig.push()
-              }
-            }
-          }
-        }
-
-        stage('Manual Approval to Deploy') {
             steps {
-                input 'Do you approve deployment?'
-                echo 'Approval received. Deploying to k3s...'
-                // ... deployment steps ...
+                script {
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                    dockerImageMsConfig.push()
+                    }
+                }
             }
         }
 
         stage('K3S Deployment') {
             agent {
                 kubernetes {
-                    cloud 'k3s'
+                    cloud 'k3s-ec2'
                     defaultContainer 'kubectl'
                     yamlFile 'k8s/kubectl-pod.yaml'
                 }
             }
             stages {
-                stage('Deploy to K3S') {
+                stage('Deploy to K3S for integration test') {
                     steps {
                         container('kubectl') {
                             sh '''
                                 sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
-                                k8s/ms-pod.tmpl.yaml > k8s/ms-pod.yaml
-                                kubectl --namespace jenkins-ns apply -f k8s/ms-pod.yaml
+                                k8s/ms-pod-test.tmpl.yaml > k8s/ms-pod-test.yaml
+                                kubectl --namespace jenkins-ns apply -f k8s/ms-pod-test.yaml
                             '''
                         }
                     }
                 }
 
-                stage('Wait and Check Test Result') {
+                stage('Wait and Check integration test result') {
                     steps {
                         container('kubectl') {
                             sh '''
-                                kubectl --namespace jenkins-ns wait --for=condition=Ready pod/hello-world-piggy-ms-pod --timeout=300s || exit 1
-                                kubectl --namespace jenkins-ns logs pod/hello-world-piggy-ms-pod
+                                kubectl --namespace jenkins-ns wait --for=condition=Ready pod/hello-world-piggy-ms-pod-test --timeout=300s || exit 1
+                                kubectl --namespace jenkins-ns logs pod/hello-world-piggy-ms-pod-test
                             '''
                         }
                     }
                 }
 
-//                 stage('Clean up') {
-//                     steps {
-//                         container('kubectl') {
-//                             sh '''
-//                                 kubectl --namespace jenkins-ns delete pod hello-world-piggy-ms-pod --ignore-not-found=true
-//                             '''
-//                         }
-//                     }
-//                 }
+                stage('Clean up') {
+                    steps {
+                        container('kubectl') {
+                            sh '''
+                                kubectl --namespace jenkins-ns delete pod hello-world-piggy-ms-pod-test --ignore-not-found=true
+                            '''
+                        }
+                    }
+                }
+
+                stage('Manual Approval to Deploy') {
+                    when {
+                        branch 'main'
+                    }
+
+                    steps {
+                        input 'Do you approve deployment?'
+                        echo 'Approval received. Deploying to k3s...'
+                        container('kubectl') {
+                            sh '''
+                                kubectl --namespace jenkins-ns apply -f k8s/ms-pod-prod.yaml
+                            '''
+                        }
+                    }
+                }
+
+
+
             }
         }
     }
