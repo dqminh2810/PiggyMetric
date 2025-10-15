@@ -18,6 +18,7 @@ pipeline {
         stage('Check ENV') {
             steps {
                 sh '''
+                    checkout scm
                     echo "-------ENV VARIABLES-------"
                     echo "NODE_NAME is $NODE_NAME"
                     echo "JOB_NAME is $JOB_NAME"
@@ -39,6 +40,7 @@ pipeline {
         stage('Unit Test & Build maven') {
             steps {
                 sh '''
+                    echo "Branch name is ${env.BRANCH_NAME}"
                     echo "Unit Test & Build maven project..."
                     mvn clean package
                 '''
