@@ -9,7 +9,8 @@ pipeline {
         GITHUB_CREDENTIAL_ID = "github-api"
         WORKSPACE = "${env.WORKSPACE}"
         IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
-        IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
+//         IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
+        IMAGE_TAG = "22-51b7245"
         DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
     }
 
@@ -34,20 +35,11 @@ pipeline {
             }
         }
 
-        stage('Build maven') {
+        stage('Unit Test & Build maven') {
             steps {
                 sh '''
-                    echo "Building maven project..."
-                    mvn clean package -DskipTests
-                '''
-            }
-        }
-
-        stage('Unit test') {
-            steps {
-                sh '''
-                    echo "Testing maven project..."
-                    mvn test
+                    echo "Unit Test & Build maven project..."
+                    mvn clean package
                 '''
             }
         }
@@ -70,7 +62,7 @@ pipeline {
             }
         }
 
-        stage('K3S Deployment') {
+        stage('Prepare ENV for K3S deployment') {
             agent {
                 kubernetes {
                     cloud 'k3s-ec2'
@@ -79,22 +71,13 @@ pipeline {
                 }
             }
             stages {
-                stage('Deploy to K3S for integration test') {
+                stage('Integration test on K3S') {
                     steps {
                         container('kubectl') {
                             sh '''
                                 sed -e "s|__IMAGE_PLACEHOLDER__|${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}|g" \
                                 k8s/ms-pod-test.tmpl.yaml > k8s/ms-pod-test.yaml
                                 kubectl --namespace jenkins-ns apply -f k8s/ms-pod-test.yaml
-                            '''
-                        }
-                    }
-                }
-
-                stage('Wait and Check integration test result') {
-                    steps {
-                        container('kubectl') {
-                            sh '''
                                 kubectl --namespace jenkins-ns wait --for=condition=Ready pod/hello-world-piggy-ms-pod-test --timeout=300s || exit 1
                                 kubectl --namespace jenkins-ns logs pod/hello-world-piggy-ms-pod-test
                             '''
@@ -102,7 +85,7 @@ pipeline {
                     }
                 }
 
-                stage('Clean up') {
+                stage('Clean up Integration test ENV') {
                     steps {
                         container('kubectl') {
                             sh '''
@@ -112,7 +95,7 @@ pipeline {
                     }
                 }
 
-                stage('Manual Approval to Deploy') {
+                stage('Manual Approval to Deploy on Production') {
                     when {
                         branch 'main'
                     }

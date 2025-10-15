@@ -15,15 +15,15 @@ spec:
         httpGet:
           path: /actuator/health
           port: 8888
-        initialDelaySeconds: 10  # Wait 30 seconds before first probe
-        periodSeconds: 20       # Check every 10 seconds
-        timeoutSeconds: 15        # Allow 5 seconds for a response
+        initialDelaySeconds: 10  # Wait <> seconds before first probe
+        periodSeconds: 15       # Check every <> seconds
+        timeoutSeconds: 10        # Allow <> seconds for a response
       livenessProbe:
         httpGet:
           path: /actuator/health
           port: 8888
         initialDelaySeconds: 10
-        periodSeconds: 20
-        timeoutSeconds: 15
+        periodSeconds: 15
+        timeoutSeconds: 10
   imagePullSecrets:
     - name: docker-reg-creds-secret  #credentials to pull images from docker registry
