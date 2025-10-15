@@ -47,7 +47,7 @@ pipeline {
             steps {
                 sh '''
                     echo "Testing maven project..."
-                    mvn test -p
+                    mvn test
                 '''
             }
         }
@@ -127,9 +127,6 @@ pipeline {
                         }
                     }
                 }
-
-
-
             }
         }
     }
