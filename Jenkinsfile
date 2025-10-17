@@ -54,6 +54,7 @@ pipeline {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                     dockerImageMsConfig.push()
                 }
+                }
             }
         }
 
