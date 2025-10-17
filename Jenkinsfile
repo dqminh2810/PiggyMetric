@@ -10,7 +10,7 @@ pipeline {
         GITHUB_BRANCH_NAME = "${env.GIT_BRANCH}"
         WORKSPACE = "${env.WORKSPACE}"
         IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
-        IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
+        IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'"
 //         IMAGE_TAG = "arm64"
         DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
     }
