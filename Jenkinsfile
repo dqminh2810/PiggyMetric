@@ -10,8 +10,8 @@ pipeline {
         GITHUB_BRANCH_NAME = "${env.GIT_BRANCH}"
         WORKSPACE = "${env.WORKSPACE}"
         IMAGE_NAME_MS_CONFIG = 'dqminh2810/hello-world-piggy_config'
-//         IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
-        IMAGE_TAG = "arm64"
+        IMAGE_TAG = "${env.BUILD_NUMBER}-${env.GIT_COMMIT?.take(7) ?: 'dev'}"
+//         IMAGE_TAG = "arm64"
         DOCKER_CREDENTIALS_ID = 'docker-repository-credential'
     }
 
@@ -47,20 +47,12 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build & Push Docker Image') {
             steps {
                 script {
                     dockerImageMsConfig = docker.build("${IMAGE_NAME_MS_CONFIG}:${IMAGE_TAG}", "${WORKSPACE}/config")
-                }
-            }
-        }
-
-        stage('Push Docker Image') {
-            steps {
-                script {
                     docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
                     dockerImageMsConfig.push()
-                    }
                 }
             }
         }
@@ -83,15 +75,6 @@ pipeline {
                                 kubectl --namespace jenkins-ns apply -f k8s/ms-pod-test.yaml
                                 kubectl --namespace jenkins-ns wait --for=condition=Ready pod/hello-world-piggy-ms-pod-test --timeout=300s || exit 1
                                 kubectl --namespace jenkins-ns logs pod/hello-world-piggy-ms-pod-test
-                            '''
-                        }
-                    }
-                }
-
-                stage('Clean up Integration test ENV') {
-                    steps {
-                        container('kubectl') {
-                            sh '''
                                 kubectl --namespace jenkins-ns delete pod hello-world-piggy-ms-pod-test --ignore-not-found=true
                             '''
                         }
