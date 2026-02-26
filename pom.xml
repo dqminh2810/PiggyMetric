@@ -22,6 +22,17 @@
         <java.version>17</java.version>
     </properties>
 
+    <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <url>https://3cff-171-225-184-212.ngrok-free.app:443/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>maven-snapshots</id>
+            <url>https://3cff-171-225-184-212.ngrok-free.app:443/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
